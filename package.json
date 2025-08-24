@@ -1,0 +1,112 @@
+{
+  "name": "@tsports/go-colorful",
+  "version": "1.0.7-tsport",
+  "goSourceVersion": "v1.0.7",
+  "portInfo": {
+    "sourceRepo": "https://github.com/lucasb-eyer/go-colorful",
+    "sourceVersion": "v1.0.7",
+    "tsportVersion": 0,
+    "lastUpdated": "2024-08-24T12:00:00.000Z"
+  },
+  "description": "A TypeScript port of the go-colorful package for working with colors",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "type": "module",
+  "keywords": [
+    "go-colorful",
+    "color",
+    "colors",
+    "colorspace",
+    "rgb",
+    "hsl",
+    "hsv",
+    "lab",
+    "luv",
+    "hcl",
+    "oklab",
+    "oklch",
+    "hsluv",
+    "color-conversion",
+    "palette",
+    "color-generation",
+    "color-distance",
+    "color-blending",
+    "typescript"
+  ],
+  "author": {
+    "name": "tsports",
+    "url": "https://github.com/tsports"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TSports/go-colorful"
+  },
+  "bugs": {
+    "url": "https://github.com/TSports/go-colorful/issues"
+  },
+  "homepage": "https://github.com/TSports/go-colorful#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "imports": {
+    "#src/*": "./src/*",
+    "#test/*": "./test/*"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./go-style": {
+      "import": "./dist/go-style.js",
+      "require": "./dist/go-style.cjs",
+      "types": "./dist/go-style.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs",
+      "types": "./dist/types.d.ts"
+    },
+    "./package.json": "./package.json",
+    "./README.md": "./README.md"
+  },
+  "dependencies": {},
+  "scripts": {
+    "build": "moon run build",
+    "clean": "moon run clean",
+    "dev": "moon run dev",
+    "test": "moon run test",
+    "lint": "moon run lint",
+    "format": "moon run format",
+    "format:check": "dprint check",
+    "docs": "moon run docs",
+    "docs:build": "moon run docs-build",
+    "dev-docs": "moon run dev-docs",
+    "prepack": "moon run prepack",
+    "setup": "moon run setup",
+    "version:bump-go": "moon run version-bump-go",
+    "version:bump-tsport": "moon run version-bump-tsport"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.2",
+    "@moonrepo/cli": "^1.39.4",
+    "@types/bun": "^1.2.20",
+    "bun-types": "^1.2.20",
+    "dprint": "^0.50.1",
+    "tsconfig-moon": "^1.4.1",
+    "typedoc": "^0.28.10",
+    "typedoc-plugin-markdown": "^4.8.1",
+    "typedoc-vitepress-theme": "^1.1.2",
+    "typescript": "^5.9.2",
+    "vitepress": "^1.6.4"
+  }
+}
