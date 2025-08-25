@@ -6,6 +6,7 @@
     "dist/**",
     "node_modules/**",
     "test/automation/reference/**",
+    "test/hsluv-snapshot-rev4.json",
     "docs/**",
     "*.log",
     "*.lock",

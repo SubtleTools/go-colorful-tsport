@@ -90,7 +90,7 @@
     "test": "moon run test",
     "test:ci": "bun test",
     "lint": "moon run lint",
-    "lint:ci": "biome check src",
+    "lint:ci": "biome lint src",
     "format": "moon run format",
     "format:check": "dprint check",
     "docs": "moon run docs",
