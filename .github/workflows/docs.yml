@@ -31,31 +31,36 @@ jobs:
 
       - name: Install dependencies
         run: bun install
+        working-directory: packages/tsports/go-colorful
 
       - name: Install documentation dependencies
         run: |
           bun add -D typedoc typedoc-plugin-markdown typedoc-plugin-merge-modules
           bun add -D vitepress vue
+        working-directory: packages/tsports/go-colorful
 
       - name: Build project
         run: bun run build
+        working-directory: packages/tsports/go-colorful
 
       - name: Generate API documentation
         run: bun run build-docs
+        working-directory: packages/tsports/go-colorful
 
       - name: Build VitePress documentation
         run: bun run docs-build
+        working-directory: packages/tsports/go-colorful
 
       - name: Check for broken links
         uses: lycheeverse/lychee-action@v1
         with:
-          args: --verbose --no-progress --accept 200,403,429 ./docs/.vitepress/dist/**/*.html
+          args: --verbose --no-progress --accept 200,403,429 ./packages/tsports/go-colorful/docs/.vitepress/dist/**/*.html
           fail: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/.vitepress/dist
+          path: ./packages/tsports/go-colorful/docs/.vitepress/dist
 
   deploy-docs:
     name: Deploy Documentation
