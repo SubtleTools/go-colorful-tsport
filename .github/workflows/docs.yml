@@ -38,13 +38,13 @@ jobs:
           bun add -D vitepress vue
 
       - name: Build project
-        run: bun run build
+        run: bun run build:ci
 
       - name: Generate API documentation
-        run: bun run build-docs
+        run: bun run docs:build:ci
 
       - name: Build VitePress documentation
-        run: bun run docs-build
+        run: bun run docs:build:ci
 
       - name: Check for broken links
         uses: lycheeverse/lychee-action@v1

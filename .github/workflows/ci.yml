@@ -39,13 +39,13 @@ jobs:
         run: bun install
 
       - name: Run linting
-        run: bun run lint
+        run: bun run lint:ci
 
       - name: Type checking
-        run: bun run build
+        run: bun run build:ci
 
       - name: Run tests
-        run: bun test
+        run: bun run test:ci
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -76,7 +76,7 @@ jobs:
         run: bun run format:check
 
       - name: Run linting
-        run: bun run lint
+        run: bun run lint:ci
 
   build:
     runs-on: ubuntu-latest
@@ -98,7 +98,7 @@ jobs:
         run: bun install
 
       - name: Build package
-        run: bun run build
+        run: bun run build:ci
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -122,7 +122,7 @@ jobs:
         run: bun install
 
       - name: Build documentation
-        run: bun run docs:build
+        run: bun run docs:build:ci
 
       - name: Upload docs artifacts
         uses: actions/upload-artifact@v4
