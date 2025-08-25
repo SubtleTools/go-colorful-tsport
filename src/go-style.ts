@@ -432,7 +432,7 @@ export function FastWarmColorWithRand(rand: RandInterface): Color {
   // Convert Go-style rand to TypeScript-style rand
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return Color.fromTSColor(TSColorful.FastWarmColorWithRand(tsRand));
 }
@@ -441,7 +441,7 @@ export function FastWarmColorWithRand(rand: RandInterface): Color {
 export function WarmColorWithRand(rand: RandInterface): Color {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return Color.fromTSColor(TSColorful.WarmColorWithRand(tsRand));
 }
@@ -450,7 +450,7 @@ export function WarmColorWithRand(rand: RandInterface): Color {
 export function FastHappyColorWithRand(rand: RandInterface): Color {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return Color.fromTSColor(TSColorful.FastHappyColorWithRand(tsRand));
 }
@@ -459,7 +459,7 @@ export function FastHappyColorWithRand(rand: RandInterface): Color {
 export function HappyColorWithRand(rand: RandInterface): Color {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return Color.fromTSColor(TSColorful.HappyColorWithRand(tsRand));
 }
@@ -504,13 +504,10 @@ export function SoftPaletteEx(
 }
 
 // FastWarmPaletteWithRand generates warm colors with custom random source
-export function FastWarmPaletteWithRand(
-  colorsCount: number,
-  rand: RandInterface
-): Color[] {
+export function FastWarmPaletteWithRand(colorsCount: number, rand: RandInterface): Color[] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return TSColorful.FastWarmPaletteWithRand(colorsCount, tsRand).map((c) => Color.fromTSColor(c));
 }
@@ -522,20 +519,17 @@ export function WarmPaletteWithRand(
 ): [Color[], Error | null] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   const [colors, error] = TSColorful.WarmPaletteWithRand(colorsCount, tsRand);
   return [colors.map((c) => Color.fromTSColor(c)), error];
 }
 
 // FastHappyPaletteWithRand generates happy colors with custom random source
-export function FastHappyPaletteWithRand(
-  colorsCount: number,
-  rand: RandInterface
-): Color[] {
+export function FastHappyPaletteWithRand(colorsCount: number, rand: RandInterface): Color[] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   return TSColorful.FastHappyPaletteWithRand(colorsCount, tsRand).map((c) => Color.fromTSColor(c));
 }
@@ -547,7 +541,7 @@ export function HappyPaletteWithRand(
 ): [Color[], Error | null] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   const [colors, error] = TSColorful.HappyPaletteWithRand(colorsCount, tsRand);
   return [colors.map((c) => Color.fromTSColor(c)), error];
@@ -560,7 +554,7 @@ export function SoftPaletteWithRand(
 ): [Color[], Error | null] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   const [colors, error] = TSColorful.SoftPaletteWithRand(colorsCount, tsRand);
   return [colors.map((c) => Color.fromTSColor(c)), error];
@@ -574,7 +568,7 @@ export function SoftPaletteExWithRand(
 ): [Color[], Error | null] {
   const tsRand = {
     float64: () => rand.Float64(),
-    intn: (n: number) => rand.Intn(n)
+    intn: (n: number) => rand.Intn(n),
   };
   const [colors, error] = TSColorful.SoftPaletteExWithRand(colorsCount, settings, tsRand);
   return [colors.map((c) => Color.fromTSColor(c)), error];
@@ -600,19 +594,50 @@ export interface RandInterface {
 export type SoftPaletteSettings = TSColorful.SoftPaletteSettings;
 
 // HexColor provides database and JSON serialization support
-export class HexColor extends TSColorful.HexColor {
-  private _color: Color;
+export class HexColor {
+  Color: Color;
 
   constructor(color: Color) {
-    super(color.toTSColor());
-    this._color = color;
+    this.Color = color;
   }
 
-  static fromColor(color: Color): HexColor {
+  static FromColor(color: Color): HexColor {
     return new HexColor(color);
   }
 
-  toColor(): Color {
-    return this._color;
+  ToColor(): Color {
+    return this.Color;
+  }
+
+  // Convert to hex string
+  Hex(): string {
+    return this.Color.Hex();
+  }
+
+  // Database/SQL interfaces
+  Scan(value: unknown): void {
+    if (typeof value !== 'string') {
+      throw new Error(`unsupported type: got ${typeof value}, want a string`);
+    }
+    this.Color = Hex(value);
+  }
+
+  Value(): string {
+    return this.Hex();
+  }
+
+  // JSON interfaces
+  MarshalJSON(): string {
+    return this.Hex();
+  }
+
+  UnmarshalJSON(data: string): void {
+    let hexCode: string;
+    try {
+      hexCode = JSON.parse(data);
+    } catch (err) {
+      throw new Error(`invalid JSON: ${err}`);
+    }
+    this.Color = Hex(hexCode);
   }
 }

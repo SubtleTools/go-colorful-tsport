@@ -1,14 +1,14 @@
 // Largely inspired by the descriptions in http://lab.medialab.sciences-po.fr/iwanthue/
 // but written from scratch.
 
-import { Color, Lab } from './colors';
-import { RandInterface } from './rand';
+import { type Color, Lab } from './colors';
+import type { RandInterface } from './rand';
 
 // The algorithm works in L*a*b* color space and converts to RGB in the end.
 // L* in [0..1], a* and b* in [-1..1]
 class lab_t {
   L: number;
-  A: number; 
+  A: number;
   B: number;
 
   constructor(L: number, A: number, B: number) {
@@ -35,12 +35,17 @@ export interface SoftPaletteSettings {
 // as a new palette of distinctive colors. Falls back to K-medoid if the mean
 // happens to fall outside of the color-space, which can only happen if you
 // specify a CheckColor function.
-export function SoftPaletteExWithRand(colorsCount: number, settings: SoftPaletteSettings, rand: RandInterface): [Color[], Error | null] {
-
+export function SoftPaletteExWithRand(
+  colorsCount: number,
+  settings: SoftPaletteSettings,
+  rand: RandInterface
+): [Color[], Error | null] {
   // Checks whether it's a valid RGB and also fulfills the potentially provided constraint.
   const check = (col: lab_t): boolean => {
     const c = Lab(col.L, col.A, col.B);
-    return c.IsValid() && (settings.CheckColor === undefined || settings.CheckColor(col.L, col.A, col.B));
+    return (
+      c.IsValid() && (settings.CheckColor === undefined || settings.CheckColor(col.L, col.A, col.B))
+    );
   };
 
   // Sample the color space. These will be the points k-means is run on.
@@ -52,8 +57,7 @@ export function SoftPaletteExWithRand(colorsCount: number, settings: SoftPalette
   }
 
   const samples: lab_t[] = [];
-  const capacity = Math.floor(1.0/dl * 2.0/dab * 2.0/dab);
-  
+
   for (let l = 0.0; l <= 1.0; l += dl) {
     for (let a = -1.0; a <= 1.0; a += dab) {
       for (let b = -1.0; b <= 1.0; b += dab) {
@@ -67,7 +71,12 @@ export function SoftPaletteExWithRand(colorsCount: number, settings: SoftPalette
 
   // That would cause some infinite loops down there...
   if (samples.length < colorsCount) {
-    return [[], new Error(`palettegen: more colors requested (${colorsCount}) than samples available (${samples.length}). Your requested color count may be wrong, you might want to use many samples or your constraint function makes the valid color space too small`)];
+    return [
+      [],
+      new Error(
+        `palettegen: more colors requested (${colorsCount}) than samples available (${samples.length}). Your requested color count may be wrong, you might want to use many samples or your constraint function makes the valid color space too small`
+      ),
+    ];
   } else if (samples.length === colorsCount) {
     return [labs2cols(samples), null]; // Oops?
   }
@@ -161,12 +170,18 @@ export function SoftPaletteExWithRand(colorsCount: number, settings: SoftPalette
   return [labs2cols(means), null];
 }
 
-export function SoftPaletteEx(colorsCount: number, settings: SoftPaletteSettings): [Color[], Error | null] {
+export function SoftPaletteEx(
+  colorsCount: number,
+  settings: SoftPaletteSettings
+): [Color[], Error | null] {
   return SoftPaletteExWithRand(colorsCount, settings, getDefaultGlobalRand());
 }
 
 // A wrapper which uses common parameters.
-export function SoftPaletteWithRand(colorsCount: number, rand: RandInterface): [Color[], Error | null] {
+export function SoftPaletteWithRand(
+  colorsCount: number,
+  rand: RandInterface
+): [Color[], Error | null] {
   return SoftPaletteExWithRand(colorsCount, { Iterations: 50, ManySamples: false }, rand);
 }
 
@@ -186,9 +201,11 @@ function inArray(haystack: lab_t[], upto: number, needle: lab_t): boolean {
 const LAB_DELTA = 1e-6;
 
 function lab_eq(lab1: lab_t, lab2: lab_t): boolean {
-  return Math.abs(lab1.L - lab2.L) < LAB_DELTA &&
-         Math.abs(lab1.A - lab2.A) < LAB_DELTA &&
-         Math.abs(lab1.B - lab2.B) < LAB_DELTA;
+  return (
+    Math.abs(lab1.L - lab2.L) < LAB_DELTA &&
+    Math.abs(lab1.A - lab2.A) < LAB_DELTA &&
+    Math.abs(lab1.B - lab2.B) < LAB_DELTA
+  );
 }
 
 // That's faster than using colorful's DistanceLab since we would have to

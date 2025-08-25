@@ -1,6 +1,7 @@
 {
-  "entryPoints": ["src/index.ts"],
+  "entryPoints": ["src/index.ts", "src/go-style.ts"],
   "out": "./docs/api",
+  "exclude": ["**/*.test.ts", "**/test/**/*"],
   "plugin": [
     "typedoc-plugin-markdown",
     "typedoc-vitepress-theme"
@@ -12,6 +13,8 @@
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
+  "skipErrorChecking": true,
+  "tsconfig": "tsconfig.json",
   "categorizeByGroup": true,
   "defaultCategory": "API",
   "categoryOrder": [

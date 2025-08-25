@@ -1,16 +1,11 @@
 // Various ways to generate single random colors
 
-import { Color } from './colors';
-import { Hsv, Hcl } from './colors';
-import { getDefaultGlobalRand, RandInterface } from './rand';
+import { type Color, Hcl, Hsv } from './colors';
+import { getDefaultGlobalRand, type RandInterface } from './rand';
 
 // Creates a random dark, "warm" color through a restricted HSV space.
 export function FastWarmColorWithRand(rand: RandInterface): Color {
-  return Hsv(
-    rand.float64() * 360.0,
-    0.5 + rand.float64() * 0.3,
-    0.3 + rand.float64() * 0.3
-  );
+  return Hsv(rand.float64() * 360.0, 0.5 + rand.float64() * 0.3, 0.3 + rand.float64() * 0.3);
 }
 
 export function FastWarmColor(): Color {
@@ -33,20 +28,12 @@ export function WarmColor(): Color {
 }
 
 function randomWarmWithRand(rand: RandInterface): Color {
-  return Hcl(
-    rand.float64() * 360.0,
-    0.1 + rand.float64() * 0.3,
-    0.2 + rand.float64() * 0.3
-  );
+  return Hcl(rand.float64() * 360.0, 0.1 + rand.float64() * 0.3, 0.2 + rand.float64() * 0.3);
 }
 
 // Creates a random bright, "pimpy" color through a restricted HSV space.
 export function FastHappyColorWithRand(rand: RandInterface): Color {
-  return Hsv(
-    rand.float64() * 360.0,
-    0.7 + rand.float64() * 0.3,
-    0.6 + rand.float64() * 0.3
-  );
+  return Hsv(rand.float64() * 360.0, 0.7 + rand.float64() * 0.3, 0.6 + rand.float64() * 0.3);
 }
 
 export function FastHappyColor(): Color {
@@ -69,9 +56,5 @@ export function HappyColor(): Color {
 }
 
 function randomPimpWithRand(rand: RandInterface): Color {
-  return Hcl(
-    rand.float64() * 360.0,
-    0.5 + rand.float64() * 0.3,
-    0.5 + rand.float64() * 0.3
-  );
+  return Hcl(rand.float64() * 360.0, 0.5 + rand.float64() * 0.3, 0.5 + rand.float64() * 0.3);
 }

@@ -8,7 +8,7 @@ import { Hex } from './constructors';
 
 // Error class for unsupported types during scanning
 export class ErrUnsupportedType extends Error {
-  constructor(got: any, want: string) {
+  constructor(got: unknown, want: string) {
     super(`unsupported type: got ${typeof got}, want a ${want}`);
     this.name = 'ErrUnsupportedType';
   }
@@ -69,7 +69,7 @@ export class HexColor {
   // Database/SQL interfaces
 
   // Scan implements the database/sql Scanner interface
-  scan(value: any): void {
+  scan(value: unknown): void {
     if (typeof value !== 'string') {
       throw new ErrUnsupportedType(value, 'string');
     }
@@ -80,8 +80,8 @@ export class HexColor {
     this.b = color.b;
   }
 
-  // Static scan method for convenience  
-  static scan(value: any): HexColor {
+  // Static scan method for convenience
+  static scan(value: unknown): HexColor {
     const hc = new HexColor();
     hc.scan(value);
     return hc;
@@ -163,14 +163,26 @@ export class HexColor {
   // Utility methods for compatibility
 
   // RGB values (0-1 range)
-  get R(): number { return this.r; }
-  set R(value: number) { this.r = value; }
-  
-  get G(): number { return this.g; }
-  set G(value: number) { this.g = value; }
-  
-  get B(): number { return this.b; }
-  set B(value: number) { this.b = value; }
+  get R(): number {
+    return this.r;
+  }
+  set R(value: number) {
+    this.r = value;
+  }
+
+  get G(): number {
+    return this.g;
+  }
+  set G(value: number) {
+    this.g = value;
+  }
+
+  get B(): number {
+    return this.b;
+  }
+  set B(value: number) {
+    this.b = value;
+  }
 
   // Equality check
   equals(other: HexColor): boolean {

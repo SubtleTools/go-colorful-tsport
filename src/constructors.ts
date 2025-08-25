@@ -40,7 +40,7 @@ export const Hex = (scol: string): Color => {
     // 5-digit format after #: "#12345" -> RGB(0x12, 0x34, 0x05) to match Go behavior
     const hex = scol.slice(1);
     r = parseInt(hex.slice(0, 2), 16); // "12" -> 18
-    g = parseInt(hex.slice(2, 4), 16); // "34" -> 52  
+    g = parseInt(hex.slice(2, 4), 16); // "34" -> 52
     b = parseInt(hex.slice(4, 5), 16); // "5" -> 5 (to match Go: RGB(18,52,5))
     factor = 1.0 / 255.0;
   } else if (scol.length === 7) {

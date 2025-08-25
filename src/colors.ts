@@ -3,7 +3,7 @@
 // A color is stored internally using sRGB (standard RGB) values in the range 0-1
 export class Color {
   R: number;
-  G: number; 
+  G: number;
   B: number;
 
   constructor(R: number, G: number, B: number) {
@@ -17,7 +17,7 @@ export class Color {
     const r = Math.floor(this.R * 65535.0 + 0.5);
     const g = Math.floor(this.G * 65535.0 + 0.5);
     const b = Math.floor(this.B * 65535.0 + 0.5);
-    const a = 0xFFFF;
+    const a = 0xffff;
     return [r, g, b, a];
   }
 
@@ -36,9 +36,14 @@ export class Color {
 
   // Checks whether the color exists in RGB space, i.e. all values are in [0..1]
   IsValid(): boolean {
-    return 0.0 <= this.R && this.R <= 1.0 &&
-           0.0 <= this.G && this.G <= 1.0 &&
-           0.0 <= this.B && this.B <= 1.0;
+    return (
+      0.0 <= this.R &&
+      this.R <= 1.0 &&
+      0.0 <= this.G &&
+      this.G <= 1.0 &&
+      0.0 <= this.B &&
+      this.B <= 1.0
+    );
   }
 
   // Returns Clamps the color into valid range, clamping each value to [0..1]
@@ -64,12 +69,18 @@ export class Color {
 
   // Check for equality between colors within the tolerance Delta (1/255).
   AlmostEqualRgb(c2: Color): boolean {
-    return Math.abs(this.R - c2.R) + Math.abs(this.G - c2.G) + Math.abs(this.B - c2.B) < 3.0*Delta;
+    return (
+      Math.abs(this.R - c2.R) + Math.abs(this.G - c2.G) + Math.abs(this.B - c2.B) < 3.0 * Delta
+    );
   }
 
   // You don't really want to use this, do you? Go for BlendLab, BlendLuv or BlendHcl.
   BlendRgb(c2: Color, t: number): Color {
-    return new Color(this.R + t*(c2.R - this.R), this.G + t*(c2.G - this.G), this.B + t*(c2.B - this.B));
+    return new Color(
+      this.R + t * (c2.R - this.R),
+      this.G + t * (c2.G - this.G),
+      this.B + t * (c2.B - this.B)
+    );
   }
 
   // Blends two colors in the L*a*b* color-space, which should result in a smoother blend.
@@ -77,7 +88,7 @@ export class Color {
   BlendLab(c2: Color, t: number): Color {
     const [l1, a1, b1] = this.Lab();
     const [l2, a2, b2] = c2.Lab();
-    return Lab(l1 + t*(l2 - l1), a1 + t*(a2 - a1), b1 + t*(b2 - b1));
+    return Lab(l1 + t * (l2 - l1), a1 + t * (a2 - a1), b1 + t * (b2 - b1));
   }
 
   // Blends two colors in the L*u*v* color-space, which should result in a smoother blend.
@@ -85,7 +96,7 @@ export class Color {
   BlendLuv(c2: Color, t: number): Color {
     const [l1, u1, v1] = this.Luv();
     const [l2, u2, v2] = c2.Luv();
-    return Luv(l1 + t*(l2 - l1), u1 + t*(u2 - u1), v1 + t*(v2 - v1));
+    return Luv(l1 + t * (l2 - l1), u1 + t * (u2 - u1), v1 + t * (v2 - v1));
   }
 
   // Blends two colors in the CIE-L*C*h° color-space, which should result in a smoother blend.
@@ -93,9 +104,9 @@ export class Color {
   BlendHcl(c2: Color, t: number): Color {
     const [h1, c1_val, l1] = this.Hcl();
     const [h2, c2_val, l2] = c2.Hcl();
-    
+
     // We know that h are both in [0..360]
-    return Hcl(interp_angle(h1, h2, t), c1_val + t*(c2_val - c1_val), l1 + t*(l2 - l1));
+    return Hcl(interp_angle(h1, h2, t), c1_val + t * (c2_val - c1_val), l1 + t * (l2 - l1));
   }
 
   // Blends two colors in the HSV color-space. This is fast but doesn't result in a
@@ -106,7 +117,7 @@ export class Color {
     const [h2, s2, v2] = c2.Hsv();
 
     // We know that h are both in [0..360]
-    return Hsv(interp_angle(h1, h2, t), s1 + t*(s2 - s1), v1 + t*(v2 - v1));
+    return Hsv(interp_angle(h1, h2, t), s1 + t * (s2 - s1), v1 + t * (v2 - v1));
   }
 
   // Blends two colors linearly in RGB space.
@@ -115,7 +126,7 @@ export class Color {
   BlendLinearRgb(c2: Color, t: number): Color {
     const [r1, g1, b1] = this.LinearRgb();
     const [r2, g2, b2] = c2.LinearRgb();
-    return LinearRgb(r1 + t*(r2 - r1), g1 + t*(g2 - g1), b1 + t*(b2 - b1));
+    return LinearRgb(r1 + t * (r2 - r1), g1 + t * (g2 - g1), b1 + t * (b2 - b1));
   }
 
   // HSV returns the Hue [0..360], Saturation and Value [0..1] of the color.
@@ -132,7 +143,7 @@ export class Color {
     let h = 0.0; // We use 0 instead of undefined as in wp.
     if (min !== v) {
       if (v === this.R) {
-        h = Math.fmod((this.G - this.B) / C, 6.0);
+        h = fmod((this.G - this.B) / C, 6.0);
       }
       if (v === this.G) {
         h = (this.B - this.R) / C + 2.0;
@@ -206,13 +217,13 @@ export class Color {
   }
 
   // XyzWhiteRef returns the CIE XYZ color space coordinates with given reference white point.
-  XyzWhiteRef(wref: [number, number, number]): [number, number, number] {
+  XyzWhiteRef(_wref: [number, number, number]): [number, number, number] {
     const [r, g, b] = this.LinearRgb();
-    
-    const x = 0.41239079926595948*r + 0.35758433938387796*g + 0.18048078840183429*b;
-    const y = 0.21263900587151036*r + 0.71516867876775593*g + 0.07219231536073371*b;
-    const z = 0.01933081871559185*r + 0.11919477979462599*g + 0.95053215224966058*b;
-    
+
+    const x = 0.4123907992659595 * r + 0.357584339383878 * g + 0.1804807884018343 * b;
+    const y = 0.2126390058715104 * r + 0.7151686787677559 * g + 0.0721923153607337 * b;
+    const z = 0.0193308187155918 * r + 0.119194779794626 * g + 0.9505321522496606 * b;
+
     return [x, y, z];
   }
 
@@ -265,10 +276,10 @@ export class Color {
 export const Delta = 1.0 / 255.0;
 
 // This is the default reference white point.
-export const D65: [number, number, number] = [0.95047, 1.00000, 1.08883];
+export const D65: [number, number, number] = [0.95047, 1.0, 1.08883];
 
 // And another one.
-export const D50: [number, number, number] = [0.96422, 1.00000, 0.82521];
+export const D50: [number, number, number] = [0.96422, 1.0, 0.82521];
 
 // Constructs a colorful.Color from something implementing color.Color
 export function MakeColor(col: { RGBA(): [number, number, number, number] }): [Color, boolean] {
@@ -280,7 +291,7 @@ export function MakeColor(col: { RGBA(): [number, number, number, number] }): [C
   // Since color.Color is alpha pre-multiplied, we need to divide the
   // RGB values by alpha again in order to get back the original RGB.
   const r2 = (r * 0xffff) / a;
-  const g2 = (g * 0xffff) / a;  
+  const g2 = (g * 0xffff) / a;
   const b2 = (b * 0xffff) / a;
 
   return [new Color(r2 / 65535.0, g2 / 65535.0, b2 / 65535.0), true];
@@ -294,7 +305,7 @@ export function Hex(scol: string): Color {
   }
 
   const color = scol.substring(1);
-  
+
   if (color.length === 3) {
     const r = parseInt(color[0] + color[0], 16) / 255.0;
     const g = parseInt(color[1] + color[1], 16) / 255.0;
@@ -311,28 +322,36 @@ export function Hex(scol: string): Color {
 // Creates a Color from the given values in the HSV space.
 // Hue in [0..360], Saturation and Value in [0..1]
 export function Hsv(H: number, S: number, V: number): Color {
-  let Hp = H / 60.0;
+  const Hp = H / 60.0;
   const C = V * S;
-  const X = C * (1.0 - Math.abs(Math.fmod(Hp, 2.0) - 1.0));
+  const X = C * (1.0 - Math.abs(fmod(Hp, 2.0) - 1.0));
 
-  let m = V - C;
-  let r = 0.0, g = 0.0, b = 0.0;
+  const m = V - C;
+  let r = 0.0,
+    g = 0.0,
+    b = 0.0;
 
   if (0.0 <= Hp && Hp < 1.0) {
-    r = C; g = X;
+    r = C;
+    g = X;
   } else if (1.0 <= Hp && Hp < 2.0) {
-    r = X; g = C;
+    r = X;
+    g = C;
   } else if (2.0 <= Hp && Hp < 3.0) {
-    g = C; b = X;
+    g = C;
+    b = X;
   } else if (3.0 <= Hp && Hp < 4.0) {
-    g = X; b = C;
+    g = X;
+    b = C;
   } else if (4.0 <= Hp && Hp < 5.0) {
-    r = X; b = C;
+    r = X;
+    b = C;
   } else if (5.0 <= Hp && Hp < 6.0) {
-    r = C; b = X;
+    r = C;
+    b = X;
   }
 
-  return new Color(m+r, m+g, m+b);
+  return new Color(m + r, m + g, m + b);
 }
 
 // Creates a Color from the given values in the HSL space.
@@ -345,18 +364,18 @@ export function Hsl(h: number, s: number, l: number): Color {
   const hue2rgb = (p: number, q: number, t: number): number => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
-    if (t < 1/6) return p + (q - p) * 6 * t;
-    if (t < 1/2) return q;
-    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
   };
 
   const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
   const p = 2 * l - q;
 
-  const r = hue2rgb(p, q, (h / 360 + 1/3) % 1);
+  const r = hue2rgb(p, q, (h / 360 + 1 / 3) % 1);
   const g = hue2rgb(p, q, h / 360);
-  const b = hue2rgb(p, q, (h / 360 - 1/3 + 1) % 1);
+  const b = hue2rgb(p, q, (h / 360 - 1 / 3 + 1) % 1);
 
   return new Color(r, g, b);
 }
@@ -368,7 +387,12 @@ export function Lab(L: number, a: number, b: number): Color {
 
 // Creates a Color from the given values in the CIE L*a*b* space, taking
 // into account a given reference white. (i.e. the monitor's white)
-export function LabWhiteRef(L: number, a: number, b: number, wref: [number, number, number]): Color {
+export function LabWhiteRef(
+  L: number,
+  a: number,
+  b: number,
+  wref: [number, number, number]
+): Color {
   const [X, Y, Z] = LabToXyz(L, a, b, wref);
   return XyzToRgb(X, Y, Z);
 }
@@ -380,7 +404,12 @@ export function Luv(L: number, u: number, v: number): Color {
 
 // Creates a Color from the given values in the CIE L*u*v* space, taking
 // into account a given reference white. (i.e. the monitor's white)
-export function LuvWhiteRef(L: number, u: number, v: number, wref: [number, number, number]): Color {
+export function LuvWhiteRef(
+  L: number,
+  u: number,
+  v: number,
+  wref: [number, number, number]
+): Color {
   const [X, Y, Z] = LuvToXyz(L, u, v, wref);
   return XyzToRgb(X, Y, Z);
 }
@@ -392,7 +421,12 @@ export function Hcl(h: number, c: number, l: number): Color {
 
 // Creates a Color from the given values in the CIE-L*C*h° space, taking
 // into account a given reference white. (i.e. the monitor's white)
-export function HclWhiteRef(h: number, c: number, l: number, wref: [number, number, number]): Color {
+export function HclWhiteRef(
+  h: number,
+  c: number,
+  l: number,
+  wref: [number, number, number]
+): Color {
   const [L, a, b] = HclToLab(h, c, l);
   return LabWhiteRef(L, a, b, wref);
 }
@@ -429,16 +463,16 @@ function sq(v: number): number {
   return v * v;
 }
 
-// Math.fmod equivalent for JavaScript
-Math.fmod = function(a: number, b: number): number {
+// fmod equivalent for JavaScript
+function fmod(a: number, b: number): number {
   return a % b;
-};
+}
 
 // Angle interpolation
 function interp_angle(a0: number, a1: number, t: number): number {
   // We want to interpolate angles in a way that they wrapp around correctly.
-  const da = Math.fmod(a1 - a0, 360.0);
-  return a0 + Math.fmod(2.0*da, 360.0) - da*t;
+  const da = fmod(a1 - a0, 360.0);
+  return a0 + fmod(2.0 * da, 360.0) - da * t;
 }
 
 // Linear and delinear functions
@@ -446,14 +480,14 @@ function linearize(v: number): number {
   if (v <= 0.04045) {
     return v / 12.92;
   }
-  return Math.pow((v + 0.055) / 1.055, 2.4);
+  return ((v + 0.055) / 1.055) ** 2.4;
 }
 
 function delinearize(v: number): number {
   if (v <= 0.0031308) {
     return 12.92 * v;
   }
-  return 1.055 * Math.pow(v, 1.0 / 2.4) - 0.055;
+  return 1.055 * v ** (1.0 / 2.4) - 0.055;
 }
 
 function linearizeFast(v: number): number {
@@ -478,26 +512,31 @@ function XyyToXyz(x: number, y: number, Y: number): [number, number, number] {
   if (y === 0) {
     return [0, 0, 0];
   }
-  const X = Y * x / y;
-  const Z = Y * (1 - x - y) / y;
+  const X = (Y * x) / y;
+  const Z = (Y * (1 - x - y)) / y;
   return [X, Y, Z];
 }
 
 function lab_f(t: number): number {
-  if (t > 6.0/29.0 * 6.0/29.0 * 6.0/29.0) {
-    return Math.pow(t, 1.0/3.0);
+  if (t > ((((6.0 / 29.0) * 6.0) / 29.0) * 6.0) / 29.0) {
+    return t ** (1.0 / 3.0);
   }
-  return t / (3.0 * 6.0/29.0 * 6.0/29.0) + 4.0/29.0;
+  return t / ((((3.0 * 6.0) / 29.0) * 6.0) / 29.0) + 4.0 / 29.0;
 }
 
 function lab_finv(t: number): number {
-  if (t > 6.0/29.0) {
+  if (t > 6.0 / 29.0) {
     return t * t * t;
   }
-  return 3.0 * 6.0/29.0 * 6.0/29.0 * (t - 4.0/29.0);
+  return ((((3.0 * 6.0) / 29.0) * 6.0) / 29.0) * (t - 4.0 / 29.0);
 }
 
-function XyzToLab(x: number, y: number, z: number, wref: [number, number, number]): [number, number, number] {
+function XyzToLab(
+  x: number,
+  y: number,
+  z: number,
+  wref: [number, number, number]
+): [number, number, number] {
   const fy = lab_f(y / wref[1]);
   const L = 1.16 * fy - 0.16;
   const a = 5.0 * (lab_f(x / wref[0]) - fy);
@@ -505,107 +544,122 @@ function XyzToLab(x: number, y: number, z: number, wref: [number, number, number
   return [L, a, b];
 }
 
-function LabToXyz(L: number, a: number, b: number, wref: [number, number, number]): [number, number, number] {
+function LabToXyz(
+  L: number,
+  a: number,
+  b: number,
+  wref: [number, number, number]
+): [number, number, number] {
   const l2 = (L + 0.16) / 1.16;
-  const x = wref[0] * lab_finv(l2 + a/5.0);
+  const x = wref[0] * lab_finv(l2 + a / 5.0);
   const y = wref[1] * lab_finv(l2);
-  const z = wref[2] * lab_finv(l2 - b/2.0);
+  const z = wref[2] * lab_finv(l2 - b / 2.0);
   return [x, y, z];
 }
 
-function XyzToLuv(x: number, y: number, z: number, wref: [number, number, number]): [number, number, number] {
-  const denom = x + 15.0*y + 3.0*z;
-  const denomr = wref[0] + 15.0*wref[1] + 3.0*wref[2];
-  
-  let up, vp, upr, vpr: number;
-  
+function XyzToLuv(
+  x: number,
+  y: number,
+  z: number,
+  wref: [number, number, number]
+): [number, number, number] {
+  const denom = x + 15.0 * y + 3.0 * z;
+  const denomr = wref[0] + 15.0 * wref[1] + 3.0 * wref[2];
+
+  let up: number, vp: number, upr: number, vpr: number;
+
   if (denom === 0.0) {
     up = 0.0;
     vp = 0.0;
   } else {
-    up = 4.0 * x / denom;
-    vp = 9.0 * y / denom;
+    up = (4.0 * x) / denom;
+    vp = (9.0 * y) / denom;
   }
-  
+
   if (denomr === 0.0) {
     upr = 0.0;
     vpr = 0.0;
   } else {
-    upr = 4.0 * wref[0] / denomr;
-    vpr = 9.0 * wref[1] / denomr;
+    upr = (4.0 * wref[0]) / denomr;
+    vpr = (9.0 * wref[1]) / denomr;
   }
-  
+
   const yr = y / wref[1];
   let L: number;
-  if (yr > 6.0/29.0 * 6.0/29.0 * 6.0/29.0) {
-    L = 1.16 * Math.pow(yr, 1.0/3.0) - 0.16;
+  if (yr > ((((6.0 / 29.0) * 6.0) / 29.0) * 6.0) / 29.0) {
+    L = 1.16 * yr ** (1.0 / 3.0) - 0.16;
   } else {
-    L = (29.0/3.0 * 29.0/3.0 * 29.0/3.0) / (6.0*6.0*6.0) * yr;
+    L = (((((29.0 / 3.0) * 29.0) / 3.0) * 29.0) / 3.0 / (6.0 * 6.0 * 6.0)) * yr;
   }
-  
+
   const u = 13.0 * L * (up - upr);
   const v = 13.0 * L * (vp - vpr);
-  
+
   return [L, u, v];
 }
 
-function LuvToXyz(L: number, u: number, v: number, wref: [number, number, number]): [number, number, number] {
-  const denom = wref[0] + 15.0*wref[1] + 3.0*wref[2];
-  let upr, vpr: number;
-  
+function LuvToXyz(
+  L: number,
+  u: number,
+  v: number,
+  wref: [number, number, number]
+): [number, number, number] {
+  const denom = wref[0] + 15.0 * wref[1] + 3.0 * wref[2];
+  let upr: number, vpr: number;
+
   if (denom === 0.0) {
     upr = 0.0;
     vpr = 0.0;
   } else {
-    upr = 4.0 * wref[0] / denom;
-    vpr = 9.0 * wref[1] / denom;
+    upr = (4.0 * wref[0]) / denom;
+    vpr = (9.0 * wref[1]) / denom;
   }
-  
+
   let y: number;
   if (L > 8.0) {
-    y = wref[1] * Math.pow((L + 0.16)/1.16, 3.0);
+    y = wref[1] * ((L + 0.16) / 1.16) ** 3.0;
   } else {
-    y = wref[1] * L * (3.0/29.0) * (3.0/29.0) * (3.0/29.0);
+    y = wref[1] * L * (3.0 / 29.0) * (3.0 / 29.0) * (3.0 / 29.0);
   }
-  
-  let x, z: number;
+
+  let x: number, z: number;
   if (L === 0.0) {
     x = 0.0;
     z = 0.0;
   } else {
     const up = u / (13.0 * L) + upr;
     const vp = v / (13.0 * L) + vpr;
-    
-    x = y * 9.0 * up / (4.0 * vp);
-    z = y * (12.0 - 3.0*up - 20.0*vp) / (4.0 * vp);
+
+    x = (y * 9.0 * up) / (4.0 * vp);
+    z = (y * (12.0 - 3.0 * up - 20.0 * vp)) / (4.0 * vp);
   }
-  
+
   return [x, y, z];
 }
 
 export function LabToHcl(L: number, a: number, b: number): [number, number, number] {
-  const c = Math.sqrt(a*a + b*b);
-  let h = Math.atan2(b, a) * 180.0 / Math.PI;
-  
+  const c = Math.sqrt(a * a + b * b);
+  let h = (Math.atan2(b, a) * 180.0) / Math.PI;
+
   // We want to fix h to be in [0, 360)
   if (h < 0.0) {
     h += 360.0;
   }
-  
+
   return [h, c, L];
 }
 
 function HclToLab(h: number, c: number, l: number): [number, number, number] {
-  const H = h * Math.PI / 180.0;
+  const H = (h * Math.PI) / 180.0;
   const a = c * Math.cos(H);
   const b = c * Math.sin(H);
   return [l, a, b];
 }
 
 function XyzToRgb(x: number, y: number, z: number): Color {
-  const r = 3.2409699419045214*x - 1.5373831775700935*y - 0.49861076029300328*z;
-  const g = -0.96924363628087983*x + 1.8759675015077207*y + 0.041555057407175613*z;
-  const b = 0.055630079696993609*x - 0.20397695888897657*y + 1.0569715142428786*z;
-  
+  const r = 3.2409699419045213 * x - 1.5373831775700935 * y - 0.4986107602930033 * z;
+  const g = -0.9692436362808798 * x + 1.8759675015077206 * y + 0.0415550574071756 * z;
+  const b = 0.0556300796969936 * x - 0.2039769588889766 * y + 1.0569715142428786 * z;
+
   return new Color(delinearize(r), delinearize(g), delinearize(b));
 }

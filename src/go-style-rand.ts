@@ -3,7 +3,7 @@
  * and JavaScript naming (float64, intn)
  */
 
-import { RandInterface as TSRandInterface } from './rand';
+import type { RandInterface as TSRandInterface } from './rand';
 
 // Go-style interface with capitalized method names
 export interface RandInterface {

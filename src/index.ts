@@ -47,7 +47,7 @@ export {
   WarmColor,
   WarmColorWithRand,
 } from './generators';
-export { HexColor, ErrUnsupportedType } from './hexcolor';
+export { ErrUnsupportedType, HexColor } from './hexcolor';
 export type { SoftPaletteSettings } from './palettes';
 // Palette generation
 export {
