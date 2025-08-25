@@ -83,7 +83,7 @@
   "scripts": {
     "build": "moon run build",
     "build:ci": "bun run build:typecheck && bun run build:bundle",
-    "build:typecheck": "tsc --noEmit",
+    "build:typecheck": "tsc --noEmit --project tsconfig.build.json",
     "build:bundle": "bun build src/index.ts --outdir dist --format esm --target node --minify",
     "clean": "moon run clean",
     "dev": "moon run dev", 
