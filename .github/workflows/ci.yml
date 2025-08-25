@@ -36,7 +36,7 @@ jobs:
           go-version: "1.21"
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Run linting
         run: bun run lint
@@ -70,7 +70,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Check formatting
         run: bun run format:check
@@ -95,7 +95,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Build package
         run: bun run build
@@ -119,7 +119,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Build documentation
         run: bun run docs:build
