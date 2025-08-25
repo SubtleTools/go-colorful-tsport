@@ -42,10 +42,12 @@ export function withTimeout<T>(fn: () => T, timeoutMs: number, description: stri
   const start = Date.now();
   const result = fn();
   const duration = Date.now() - start;
-  
+
   if (duration > timeoutMs) {
-    throw new Error(`${description}: Operation took ${duration}ms, which exceeds timeout of ${timeoutMs}ms`);
+    throw new Error(
+      `${description}: Operation took ${duration}ms, which exceeds timeout of ${timeoutMs}ms`
+    );
   }
-  
+
   return result;
 }

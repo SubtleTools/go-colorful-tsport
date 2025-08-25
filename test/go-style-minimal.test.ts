@@ -22,7 +22,7 @@ test('Go-style basic constructor functions', () => {
 test('Go-style basic distance calculations', () => {
   const c1 = new GoStyle.Color(1, 0, 0);
   const c2 = new GoStyle.Color(0, 1, 0);
-  
+
   expect(typeof c1.DistanceRgb(c2)).toBe('number');
   expect(c1.DistanceRgb(c2)).toBeGreaterThan(0);
 });

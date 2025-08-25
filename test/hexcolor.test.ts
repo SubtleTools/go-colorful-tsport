@@ -4,7 +4,7 @@
  */
 
 import { expect, test } from 'bun:test';
-import { HexColor, ErrUnsupportedType } from '../src';
+import { ErrUnsupportedType, HexColor } from '../src';
 
 test('HexColor basic serialization', () => {
   const testCases = [
@@ -34,7 +34,7 @@ test('HexColor basic serialization', () => {
 
 test('HexColor instance scan method', () => {
   const hc = new HexColor();
-  
+
   // Test valid hex string
   hc.scan('#ff0000');
   expect(hc.r).toBe(1);
@@ -56,9 +56,9 @@ test('HexColor error types', () => {
 });
 
 test('HexColor JSON serialization', () => {
-  const obj = { 
-    name: 'John', 
-    color: new HexColor(1, 0, 1) 
+  const obj = {
+    name: 'John',
+    color: new HexColor(1, 0, 1),
   };
 
   // Test JSON serialization
@@ -67,7 +67,7 @@ test('HexColor JSON serialization', () => {
 
   // Test JSON deserialization
   const obj2 = JSON.parse(jsonData);
-  
+
   // Manually reconstruct HexColor from the parsed data
   const reconstructedHC = HexColor.fromHex(obj2.color);
   expect(reconstructedHC.r).toBe(obj.color.r);
@@ -77,7 +77,7 @@ test('HexColor JSON serialization', () => {
 
 test('HexColor fromJSON and toJSON methods', () => {
   const hc = new HexColor(0.5, 0.8, 0.2);
-  
+
   // Test toJSON
   const json = hc.toJSON();
   expect(json).toBe(hc.hex());
@@ -109,7 +109,7 @@ test('HexColor decode method', () => {
 
 test('HexColor YAML serialization', () => {
   const hc = new HexColor(0.2, 0.6, 0.9);
-  
+
   // Test toYAML
   const yaml = hc.toYAML();
   expect(yaml).toBe(hc.hex());
@@ -145,7 +145,7 @@ test('HexColor utility methods', () => {
   const hc2 = HexColor.fromHex('#aabbcc');
   expect(hc2.hex()).toBe('#aabbcc');
 
-  // Test fromColor  
+  // Test fromColor
   const hc3 = HexColor.fromColor(color);
   expect(hc3.r).toBe(color.r);
   expect(hc3.g).toBe(color.g);
@@ -157,7 +157,7 @@ test('HexColor property accessors', () => {
 
   // Test setters
   hc.R = 0.4;
-  hc.G = 0.5;  
+  hc.G = 0.5;
   hc.B = 0.6;
 
   expect(hc.r).toBe(0.4);
@@ -187,7 +187,7 @@ test('HexColor edge cases', () => {
   // Test with boundary values
   const hcMin = new HexColor(0, 0, 0);
   const hcMax = new HexColor(1, 1, 1);
-  
+
   expect(hcMin.hex()).toBe('#000000');
   expect(hcMax.hex()).toBe('#ffffff');
 
@@ -204,9 +204,9 @@ test('HexColor composite type serialization', () => {
     color?: HexColor;
   };
 
-  const obj: CompositeType = { 
-    name: 'John', 
-    color: new HexColor(1, 0, 1) 
+  const obj: CompositeType = {
+    name: 'John',
+    color: new HexColor(1, 0, 1),
   };
 
   const jsonData = JSON.stringify(obj);
@@ -218,6 +218,8 @@ test('HexColor composite type serialization', () => {
   expect(obj2.color).toBe('#ff00ff');
 
   // Verify we can reconstruct the HexColor
-  const reconstructed = HexColor.fromHex(obj2.color!);
-  expect(reconstructed.equals(obj.color!)).toBe(true);
+  if (obj2.color && obj.color) {
+    const reconstructed = HexColor.fromHex(obj2.color);
+    expect(reconstructed.equals(obj.color)).toBe(true);
+  }
 });

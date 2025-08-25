@@ -5,7 +5,7 @@
  */
 
 import { expect, test } from 'bun:test';
-import { Color, HPLuv, HSLuv, Hex, D65 } from '../src';
+import { Color, Hex, HPLuv, HSLuv } from '../src';
 import snapshot from './hsluv-snapshot-rev4.json';
 
 // Delta for HSLuv tests (same as Go, but adjusted for our value ranges)
@@ -24,17 +24,22 @@ function fromHex(s: string): Color {
   return Hex(s);
 }
 
-function compareTuple(result: [number, number, number], expected: [number, number, number], method: string, hex: string) {
+function compareTuple(
+  result: [number, number, number],
+  expected: [number, number, number],
+  method: string,
+  hex: string
+) {
   let err = false;
   const errs = [false, false, false];
-  
+
   for (let i = 0; i < 3; i++) {
     if (Math.abs(result[i] - expected[i]) > hsluvTestDelta) {
       err = true;
       errs[i] = true;
     }
   }
-  
+
   if (err) {
     let resultOutput = '[';
     for (let i = 0; i < 3; i++) {
@@ -47,14 +52,18 @@ function compareTuple(result: [number, number, number], expected: [number, numbe
       }
     }
     resultOutput += ']';
-    
-    throw new Error(`result: ${resultOutput} expected: [${expected.join(', ')}], testing ${method} with test case ${hex}`);
+
+    throw new Error(
+      `result: ${resultOutput} expected: [${expected.join(', ')}], testing ${method} with test case ${hex}`
+    );
   }
 }
 
 function compareHex(result: string, expected: string, method: string, hex: string) {
   if (result !== expected) {
-    throw new Error(`result: ${result} expected: ${expected}, testing ${method} with test case ${hex}`);
+    throw new Error(
+      `result: ${result} expected: ${expected}, testing ${method} with test case ${hex}`
+    );
   }
 }
 
@@ -149,7 +158,7 @@ test('HSLuv snapshot testing (comprehensive reference validation)', () => {
   // Type for snapshot values
   type SnapshotValues = {
     rgb: [number, number, number];
-    xyz: [number, number, number]; 
+    xyz: [number, number, number];
     luv: [number, number, number];
     lch: [number, number, number];
     hsluv: [number, number, number];
@@ -157,67 +166,93 @@ test('HSLuv snapshot testing (comprehensive reference validation)', () => {
   };
 
   const snapshotData = snapshot as Record<string, SnapshotValues>;
-  
+
   // Test a subset of the snapshot for performance (Go tests all ~1000+ entries)
   const testEntries = Object.entries(snapshotData).slice(0, 20);
-  
+
   for (const [hex, colorValues] of testEntries) {
     // Adjust color values to be in the ranges this library uses (divide by 100 for S,L)
     const adjustedHsluv: [number, number, number] = [
       colorValues.hsluv[0],
       colorValues.hsluv[1] / 100.0,
-      colorValues.hsluv[2] / 100.0
+      colorValues.hsluv[2] / 100.0,
     ];
     const adjustedHpluv: [number, number, number] = [
       colorValues.hpluv[0],
       colorValues.hpluv[1] / 100.0,
-      colorValues.hpluv[2] / 100.0
+      colorValues.hpluv[2] / 100.0,
     ];
 
     // Test HSLuv -> Hex conversion
-    expect(() => compareHex(HSLuv(...unpack(adjustedHsluv)).hex(), hex, 'HsluvToHex', hex)).not.toThrow();
+    expect(() =>
+      compareHex(HSLuv(...unpack(adjustedHsluv)).hex(), hex, 'HsluvToHex', hex)
+    ).not.toThrow();
 
-    // Test HSLuv -> RGB conversion  
-    expect(() => compareTuple(pack(...HSLuv(...unpack(adjustedHsluv)).values()), colorValues.rgb, 'HsluvToRGB', hex)).not.toThrow();
+    // Test HSLuv -> RGB conversion
+    expect(() =>
+      compareTuple(
+        pack(...HSLuv(...unpack(adjustedHsluv)).values()),
+        colorValues.rgb,
+        'HsluvToRGB',
+        hex
+      )
+    ).not.toThrow();
 
     // Test Hex -> HSLuv conversion
-    expect(() => compareTuple(pack(...fromHex(hex).hsLuv()), adjustedHsluv, 'HsluvFromHex', hex)).not.toThrow();
+    expect(() =>
+      compareTuple(pack(...fromHex(hex).hsLuv()), adjustedHsluv, 'HsluvFromHex', hex)
+    ).not.toThrow();
 
     // Test RGB -> HSLuv conversion
-    expect(() => compareTuple(
-      pack(...new Color(colorValues.rgb[0], colorValues.rgb[1], colorValues.rgb[2]).hsLuv()), 
-      adjustedHsluv, 
-      'HsluvFromRGB', 
-      hex
-    )).not.toThrow();
+    expect(() =>
+      compareTuple(
+        pack(...new Color(colorValues.rgb[0], colorValues.rgb[1], colorValues.rgb[2]).hsLuv()),
+        adjustedHsluv,
+        'HsluvFromRGB',
+        hex
+      )
+    ).not.toThrow();
 
     // Test HPLuv -> Hex conversion
-    expect(() => compareHex(HPLuv(...unpack(adjustedHpluv)).hex(), hex, 'HpluvToHex', hex)).not.toThrow();
+    expect(() =>
+      compareHex(HPLuv(...unpack(adjustedHpluv)).hex(), hex, 'HpluvToHex', hex)
+    ).not.toThrow();
 
     // Test HPLuv -> RGB conversion
-    expect(() => compareTuple(pack(...HPLuv(...unpack(adjustedHpluv)).values()), colorValues.rgb, 'HpluvToRGB', hex)).not.toThrow();
+    expect(() =>
+      compareTuple(
+        pack(...HPLuv(...unpack(adjustedHpluv)).values()),
+        colorValues.rgb,
+        'HpluvToRGB',
+        hex
+      )
+    ).not.toThrow();
 
     // Test Hex -> HPLuv conversion
-    expect(() => compareTuple(pack(...fromHex(hex).hpLuv()), adjustedHpluv, 'HpluvFromHex', hex)).not.toThrow();
+    expect(() =>
+      compareTuple(pack(...fromHex(hex).hpLuv()), adjustedHpluv, 'HpluvFromHex', hex)
+    ).not.toThrow();
 
     // Test RGB -> HPLuv conversion
-    expect(() => compareTuple(
-      pack(...new Color(colorValues.rgb[0], colorValues.rgb[1], colorValues.rgb[2]).hpLuv()), 
-      adjustedHpluv, 
-      'HpluvFromRGB', 
-      hex
-    )).not.toThrow();
+    expect(() =>
+      compareTuple(
+        pack(...new Color(colorValues.rgb[0], colorValues.rgb[1], colorValues.rgb[2]).hpLuv()),
+        adjustedHpluv,
+        'HpluvFromRGB',
+        hex
+      )
+    ).not.toThrow();
   }
 });
 
 // Test key HSLuv snapshot entries that are known to be problematic
 test('HSLuv critical snapshot entries', () => {
-  const snapshotData = snapshot as Record<string, any>;
-  
+  const snapshotData = snapshot as Record<string, unknown>;
+
   // Test some critical entries that tend to reveal precision issues
   const criticalTests = [
     '#000000', // Pure black
-    '#ffffff', // Pure white  
+    '#ffffff', // Pure white
     '#ff0000', // Pure red
     '#00ff00', // Pure green
     '#0000ff', // Pure blue
@@ -229,19 +264,19 @@ test('HSLuv critical snapshot entries', () => {
   for (const hex of criticalTests) {
     if (snapshotData[hex]) {
       const colorValues = snapshotData[hex];
-      
+
       const adjustedHsluv: [number, number, number] = [
         colorValues.hsluv[0],
         colorValues.hsluv[1] / 100.0,
-        colorValues.hsluv[2] / 100.0
+        colorValues.hsluv[2] / 100.0,
       ];
 
       // Test round-trip conversion: HSLuv -> RGB -> HSLuv
       const c1 = HSLuv(...adjustedHsluv);
       const [h2, s2, l2] = c1.hsLuv();
-      
+
       expect(Math.abs(h2 - adjustedHsluv[0])).toBeLessThan(0.01);
-      expect(Math.abs(s2 - adjustedHsluv[1])).toBeLessThan(0.01);  
+      expect(Math.abs(s2 - adjustedHsluv[1])).toBeLessThan(0.01);
       expect(Math.abs(l2 - adjustedHsluv[2])).toBeLessThan(0.01);
 
       // Test that hex conversion is exact
