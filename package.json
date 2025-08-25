@@ -86,7 +86,7 @@
     "build:typecheck": "tsc --noEmit --project tsconfig.build.json",
     "build:bundle": "bun build src/index.ts --outdir dist --format esm --target node --minify",
     "clean": "moon run clean",
-    "dev": "moon run dev", 
+    "dev": "moon run dev",
     "test": "moon run test",
     "test:ci": "bun test",
     "lint": "moon run lint",
@@ -97,7 +97,7 @@
     "docs:build": "moon run docs-build",
     "docs:build:ci": "typedoc",
     "dev-docs": "moon run dev-docs",
-    "prepack": "moon run prepack", 
+    "prepack": "moon run prepack",
     "setup": "moon run setup",
     "version:bump-go": "moon run version-bump-go",
     "version:bump-tsport": "moon run version-bump-tsport"
