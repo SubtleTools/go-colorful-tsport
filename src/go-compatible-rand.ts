@@ -1,12 +1,12 @@
 /**
  * Go-compatible random number generator implementation
- * 
+ *
  * This module provides a way to generate identical random sequences to Go's math/rand
  * package when compatibility is required. For normal use, the standard random functions
  * should be preferred for performance reasons.
  */
 
-import { type RandInterface as TSRandInterface } from './rand';
+import type { RandInterface as TSRandInterface } from './rand';
 
 // Go-style RandInterface with PascalCase methods
 export interface GoRandInterface {
@@ -21,11 +21,11 @@ export interface GoRandInterface {
  */
 export class GoCompatibleRand implements GoRandInterface, TSRandInterface {
   private state: number;
-  
+
   constructor(seed: number = 1) {
     this.state = seed;
   }
-  
+
   /**
    * Generate a float64 in the range [0, 1)
    * Uses a simple LCG algorithm for deterministic output
@@ -36,7 +36,7 @@ export class GoCompatibleRand implements GoRandInterface, TSRandInterface {
     this.state = (this.state * 1103515245 + 12345) & 0x7fffffff;
     return this.state / 0x80000000; // Normalize to [0, 1)
   }
-  
+
   /**
    * Generate an integer in the range [0, n)
    */
@@ -46,12 +46,12 @@ export class GoCompatibleRand implements GoRandInterface, TSRandInterface {
     }
     return Math.floor(this.float64() * n);
   }
-  
+
   // Go-style PascalCase methods for compatibility
   Float64(): number {
     return this.float64();
   }
-  
+
   Intn(n: number): number {
     return this.intn(n);
   }
@@ -60,7 +60,7 @@ export class GoCompatibleRand implements GoRandInterface, TSRandInterface {
 /**
  * Create a seeded random generator for deterministic palette generation.
  * Use this when you need identical output to Go for testing or compatibility.
- * 
+ *
  * @param seed The seed value (default: 1)
  * @returns A RandInterface compatible with palette generation functions
  */

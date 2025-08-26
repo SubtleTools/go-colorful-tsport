@@ -340,7 +340,7 @@ test('Go-style MakeColor function', () => {
 test('Go-style palette generation with random functions', () => {
   let counter = 0;
   const mockRand = {
-    Float64: () => (0.3 + (counter++ % 10) * 0.05), // Varies between 0.3 and 0.75
+    Float64: () => 0.3 + (counter++ % 10) * 0.05, // Varies between 0.3 and 0.75
     Intn: (n: number) => Math.floor(((counter++ % 10) / 10) * n),
   };
 

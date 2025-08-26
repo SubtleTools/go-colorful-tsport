@@ -15,7 +15,7 @@ console.log(`RGB255: ${r255} ${g255} ${b255}`);
 // Hex conversion
 console.log(`Hex: ${c1.Hex()}`);
 
-// HSV conversion  
+// HSV conversion
 const [h, s, v] = c1.Hsv();
 console.log(`HSV: ${h.toFixed(6)} ${s.toFixed(6)} ${v.toFixed(6)}`);
 
@@ -28,7 +28,7 @@ const [l, a_val, b_val] = c1.Lab();
 console.log(`Lab: ${l.toFixed(6)} ${a_val.toFixed(6)} ${b_val.toFixed(6)}`);
 
 // Test hex parsing
-const c2 = GoStyle.Hex("#FF0080");
+const c2 = GoStyle.Hex('#FF0080');
 console.log(`Parsed hex: R=${c2.R.toFixed(6)} G=${c2.G.toFixed(6)} B=${c2.B.toFixed(6)}`);
 
 // Test color distance
@@ -38,4 +38,6 @@ console.log(`Distance: ${dist.toFixed(6)}`);
 
 // Test color blending
 const blended = c1.BlendLab(c3, 0.5);
-console.log(`Blended: R=${blended.R.toFixed(6)} G=${blended.G.toFixed(6)} B=${blended.B.toFixed(6)}`);
+console.log(
+  `Blended: R=${blended.R.toFixed(6)} G=${blended.G.toFixed(6)} B=${blended.B.toFixed(6)}`
+);
