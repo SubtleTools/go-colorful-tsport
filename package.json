@@ -85,6 +85,7 @@
     "format": "dprint fmt",
     "format:check": "dprint check",
     "docs": "typedoc",
+    "docs:build": "bunx vitepress build docs",
     "prepack": "bun run build"
   },
   "devDependencies": {
