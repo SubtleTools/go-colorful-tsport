@@ -4,7 +4,7 @@ type: "library"
 tasks:
   build:
     command: "bun"
-    args: ["tsc", "--project", "tsconfig.build.json"]
+    args: ["run", "build"]
     inputs:
       - "src/**/*"
       - "tsconfig.json"
@@ -14,7 +14,7 @@ tasks:
 
   build-docs:
     command: "bun"
-    args: ["typedoc"]
+    args: ["run", "docs"]
     deps: ["build"]
     inputs:
       - "src/**/*"
@@ -24,15 +24,12 @@ tasks:
       - "docs/api/**/*"
 
   clean:
-    command: "node"
-    args: [
-      "-e",
-      'const fs = require("fs"); if (fs.existsSync("dist")) fs.rmSync("dist", {recursive: true, force: true})',
-    ]
+    command: "bun"
+    args: ["run", "clean"]
 
   dev:
     command: "bun"
-    args: ["run", "--watch", "src/index.ts"]
+    args: ["run", "dev"]
     local: true
 
   dev-docs:
@@ -63,8 +60,8 @@ tasks:
       - "docs/.vitepress/dist/**/*"
 
   format:
-    command: "dprint"
-    args: ["fmt"]
+    command: "bun"
+    args: ["run", "format"]
     inputs:
       - "src/**/*"
       - "test/**/*"
@@ -73,8 +70,8 @@ tasks:
       - "dprint.json"
 
   lint:
-    command: "biome"
-    args: ["check", "src", "test", "--no-errors-on-unmatched", "--write"]
+    command: "bun"
+    args: ["run", "lint"]
     inputs:
       - "src/**/*"
       - "test/**/*"
@@ -98,7 +95,7 @@ tasks:
 
   test:
     command: "bun"
-    args: ["test"]
+    args: ["run", "test"]
     inputs:
       - "src/**/*"
       - "test/**/*"

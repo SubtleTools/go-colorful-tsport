@@ -28,10 +28,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Run tests  
-        run: |
-          # Run all tests except automated-cases.test.ts (contains expected failures)
-          find test -name "*.test.ts" | grep -v automated-cases | xargs bun test
+      - name: Run tests
+        run: bun run test
 
       - name: Build project
         run: bun run build

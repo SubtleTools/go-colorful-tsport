@@ -53,9 +53,7 @@ jobs:
         run: bun run build
 
       - name: Run unit tests
-        run: |
-          # Run all tests except automated-cases.test.ts (contains expected failures)
-          find test -name "*.test.ts" | grep -v automated-cases | xargs bun test
+        run: bun run test
 
   coverage:
     name: Coverage Report
@@ -75,9 +73,7 @@ jobs:
         run: bun install
 
       - name: Run tests with coverage
-        run: |
-          # Run all tests except automated-cases.test.ts (contains expected failures)
-          find test -name "*.test.ts" | grep -v automated-cases | xargs bun test --coverage
+        run: bun test --coverage test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

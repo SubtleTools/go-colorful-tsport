@@ -45,9 +45,7 @@ jobs:
         run: bun run build
 
       - name: Run tests
-        run: |
-          # Run all tests except automated-cases.test.ts (contains expected failures)
-          find test -name "*.test.ts" | grep -v automated-cases | xargs bun test
+        run: bun run test
 
       - name: Run compatibility tests
         run: |
