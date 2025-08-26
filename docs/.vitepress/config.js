@@ -4,9 +4,9 @@ import rawTypedocSidebar from '../api/typedoc-sidebar.json'
 // Remove .md extensions from TypeDoc sidebar links
 const typedocSidebar = rawTypedocSidebar.map(section => ({
   ...section,
-  items: section.items.map(item => ({
+  items: (section.items || []).map(item => ({
     ...item,
-    link: item.link.replace('.md', '')
+    link: item.link ? item.link.replace('.md', '') : item.link
   }))
 }))
 

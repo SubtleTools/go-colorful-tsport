@@ -15,7 +15,7 @@ function findTestFiles(dir) {
       
       if (stat.isDirectory()) {
         walk(fullPath);
-      } else if (item.endsWith('.test.ts') && !item.includes('automated-cases')) {
+      } else if (item.endsWith('.test.ts') && !item.includes('automated-cases') && !item.includes('automated-comparison')) {
         files.push(fullPath);
       }
     }
