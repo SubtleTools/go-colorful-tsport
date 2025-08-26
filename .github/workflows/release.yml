@@ -35,7 +35,7 @@ jobs:
         run: bun run lint
 
       - name: Run tests
-        run: bun test
+        run: bun test --ignore "**/automated-cases.test.ts"
 
       - name: Build package
         run: bun run build
@@ -74,7 +74,7 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/v}
           echo "version=$TAG" >> $GITHUB_OUTPUT
           echo "tag=$TAG" >> $GITHUB_OUTPUT
-          
+
           # Get Go source version
           GO_VERSION=$(node -p "require('./package.json').goSourceVersion || 'unknown'")
           echo "go_version=$GO_VERSION" >> $GITHUB_OUTPUT

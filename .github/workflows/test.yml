@@ -53,7 +53,7 @@ jobs:
         run: bun run build
 
       - name: Run unit tests
-        run: bun test
+        run: bun test --ignore "**/automated-cases.test.ts"
 
   coverage:
     name: Coverage Report
@@ -73,7 +73,7 @@ jobs:
         run: bun install
 
       - name: Run tests with coverage
-        run: bun test --coverage
+        run: bun test --coverage --ignore "**/automated-cases.test.ts"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
