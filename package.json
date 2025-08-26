@@ -1,6 +1,6 @@
 {
   "name": "@tsports/go-colorful",
-  "version": "1.0.7-tsport",
+  "version": "1.2.0-tsport.0",
   "goSourceVersion": "v1.2.0",
   "portInfo": {
     "sourceRepo": "https://github.com/lucasb-eyer/go-colorful",
@@ -90,7 +90,7 @@
     "docs:build": "moon run docs-build",
     "docs:build:ci": "typedoc",
     "dev-docs": "moon run dev-docs",
-    "prepack": "moon run prepack",
+    "prepack": "bun run build:ci",
     "setup": "moon run setup",
     "version:bump-go": "moon run version-bump-go",
     "version:bump-tsport": "moon run version-bump-tsport"
