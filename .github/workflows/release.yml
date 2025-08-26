@@ -35,7 +35,9 @@ jobs:
         run: bun run lint
 
       - name: Run tests
-        run: bun test --ignore "**/automated-cases.test.ts"
+        run: |
+          # Run all tests except automated-cases.test.ts (contains expected failures)
+          find test -name "*.test.ts" | grep -v automated-cases | xargs bun test
 
       - name: Build package
         run: bun run build
