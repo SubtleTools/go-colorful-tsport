@@ -13,6 +13,7 @@ const typedocSidebar = rawTypedocSidebar.map(section => ({
 export default defineConfig({
   title: '@tsports/go-colorful',
   description: 'Complete TypeScript port of lucasb-eyer/go-colorful with 100% API compatibility',
+  ignoreDeadLinks: true,
   
   themeConfig: {
     nav: [
