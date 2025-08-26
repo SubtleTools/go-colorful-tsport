@@ -80,7 +80,7 @@
     "build:dts": "tsc --project tsconfig.build.json --declaration --emitDeclarationOnly --outDir dist",
     "clean": "rm -rf dist coverage .nyc_output",
     "dev": "bun run build --watch",
-    "test": "find test -name '*.test.ts' | grep -v automated-cases | xargs bun test",
+    "test": "bun scripts/test.js",
     "lint": "biome lint src",
     "format": "dprint fmt",
     "format:check": "dprint check",
