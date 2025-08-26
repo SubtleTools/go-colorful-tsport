@@ -1,8 +1,15 @@
 /**
  * Tests for palette generation functions that need better coverage
  */
-import { test, expect } from 'bun:test';
-import { FastWarmPalette, WarmPalette, FastHappyPalette, HappyPalette, SoftPalette, SoftPaletteEx } from '../src/palettes';
+import { expect, test } from 'bun:test';
+import {
+  FastHappyPalette,
+  FastWarmPalette,
+  HappyPalette,
+  SoftPalette,
+  SoftPaletteEx,
+  WarmPalette,
+} from '../src/palettes';
 
 test('Palette generation edge cases', () => {
   // Test single color palettes
@@ -17,11 +24,11 @@ test('Palette generation edge cases', () => {
   // Test larger palettes
   const largeWarm = FastWarmPalette(20);
   expect(largeWarm).toHaveLength(20);
-  largeWarm.forEach(color => expect(color.isValid()).toBe(true));
+  largeWarm.forEach((color) => expect(color.isValid()).toBe(true));
 
   const largeHappy = FastHappyPalette(15);
   expect(largeHappy).toHaveLength(15);
-  largeHappy.forEach(color => expect(color.isValid()).toBe(true));
+  largeHappy.forEach((color) => expect(color.isValid()).toBe(true));
 });
 
 test('Error-returning palette functions', () => {
@@ -29,17 +36,17 @@ test('Error-returning palette functions', () => {
   const [warmPalette, warmError] = WarmPalette(3);
   expect(warmError).toBeNull();
   expect(warmPalette).toHaveLength(3);
-  warmPalette.forEach(color => expect(color.isValid()).toBe(true));
+  warmPalette.forEach((color) => expect(color.isValid()).toBe(true));
 
   const [happyPalette, happyError] = HappyPalette(3);
   expect(happyError).toBeNull();
   expect(happyPalette).toHaveLength(3);
-  happyPalette.forEach(color => expect(color.isValid()).toBe(true));
+  happyPalette.forEach((color) => expect(color.isValid()).toBe(true));
 
   const [softPalette, softError] = SoftPalette(3);
   expect(softError).toBeNull();
   expect(softPalette).toHaveLength(3);
-  softPalette.forEach(color => expect(color.isValid()).toBe(true));
+  softPalette.forEach((color) => expect(color.isValid()).toBe(true));
 });
 
 test('SoftPaletteEx with custom constraints', () => {
@@ -49,13 +56,13 @@ test('SoftPaletteEx with custom constraints', () => {
       return l > 0.3 && l < 0.8;
     },
     Iterations: 20,
-    ManySamples: false
+    ManySamples: false,
   };
 
   const [palette, error] = SoftPaletteEx(5, settings);
   expect(error).toBeNull();
   expect(palette).toHaveLength(5);
-  palette.forEach(color => expect(color.isValid()).toBe(true));
+  palette.forEach((color) => expect(color.isValid()).toBe(true));
 });
 
 test('SoftPaletteEx with restrictive constraints', () => {
@@ -65,13 +72,13 @@ test('SoftPaletteEx with restrictive constraints', () => {
       return l > 0.4 && l < 0.6 && Math.abs(a) < 0.1 && Math.abs(b) < 0.1;
     },
     Iterations: 50,
-    ManySamples: true  // Need many samples due to restrictive constraint
+    ManySamples: true, // Need many samples due to restrictive constraint
   };
 
   const [palette, error] = SoftPaletteEx(3, settings);
   expect(error).toBeNull();
   expect(palette).toHaveLength(3);
-  palette.forEach(color => expect(color.isValid()).toBe(true));
+  palette.forEach((color) => expect(color.isValid()).toBe(true));
 });
 
 test('Palette generation with zero count', () => {
@@ -99,15 +106,15 @@ test('Large palette stress test', () => {
   try {
     const largePalette = FastWarmPalette(100);
     expect(largePalette).toHaveLength(100);
-    
+
     // Verify all colors are valid and distinct
     const colorSet = new Set();
-    largePalette.forEach(color => {
+    largePalette.forEach((color) => {
       expect(color.isValid()).toBe(true);
       const key = `${color.r.toFixed(3)}-${color.g.toFixed(3)}-${color.b.toFixed(3)}`;
       colorSet.add(key);
     });
-    
+
     // Should have reasonable diversity (not all identical)
     expect(colorSet.size).toBeGreaterThan(50);
   } catch (e) {

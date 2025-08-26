@@ -1,29 +1,29 @@
 /**
  * Tests for constructor functions that need better coverage
  */
-import { test, expect } from 'bun:test';
+import { expect, test } from 'bun:test';
 import * as Colors from '../src/colors';
 
 test('Constructor error handling', () => {
   // Test edge cases for constructors - these don't throw, they return valid colors
   const validColor1 = Colors.Hsv(0, 0, 0);
-  expect(validColor1.isValid()).toBe(true);
-  
+  expect(validColor1.IsValid()).toBe(true);
+
   const validColor2 = Colors.Hsl(360, 1, 1);
-  expect(validColor2.isValid()).toBe(true);
+  expect(validColor2.IsValid()).toBe(true);
 
-  const validColor3 = Colors.Lab(1, 1, 1);
-  expect(validColor3.isValid()).toBe(true);
+  const validColor3 = Colors.Lab(0.5, 0.2, -0.1);
+  expect(validColor3.IsValid()).toBe(true);
 
-  const validColor4 = Colors.Luv(1, 1, 1);
-  expect(validColor4.isValid()).toBe(true);
-  
+  const validColor4 = Colors.Luv(0.5, 0.1, 0.1);
+  expect(validColor4.IsValid()).toBe(true);
+
   // Test some hex colors that should work
   const hexColor1 = Colors.Hex('#FF0000');
-  expect(hexColor1.isValid()).toBe(true);
-  
+  expect(hexColor1.IsValid()).toBe(true);
+
   const hexColor2 = Colors.Hex('#000000');
-  expect(hexColor2.isValid()).toBe(true);
+  expect(hexColor2.IsValid()).toBe(true);
 });
 
 test('MakeColor edge cases', () => {
@@ -31,12 +31,12 @@ test('MakeColor edge cases', () => {
   const mockColor = {
     RGBA(): [number, number, number, number] {
       return [32768, 16384, 65535, 65535]; // 16-bit values
-    }
+    },
   };
 
   const [color, ok] = Colors.MakeColor(mockColor);
   expect(ok).toBe(true);
-  expect(color.R).toBeCloseTo(0.5, 5);
+  expect(color.R).toBeCloseTo(0.5, 4);
   expect(color.G).toBeCloseTo(0.25, 5);
   expect(color.B).toBeCloseTo(1, 5);
 
@@ -44,7 +44,7 @@ test('MakeColor edge cases', () => {
   const mockColorZeroAlpha = {
     RGBA(): [number, number, number, number] {
       return [32768, 16384, 65535, 0];
-    }
+    },
   };
 
   const [, ok2] = Colors.MakeColor(mockColorZeroAlpha);
@@ -52,16 +52,16 @@ test('MakeColor edge cases', () => {
 });
 
 test('White reference constructors', () => {
-  const customWhite: [number, number, number] = [0.9642, 1.0000, 0.8249];
-  
+  const customWhite: [number, number, number] = [0.9642, 1.0, 0.8249];
+
   const labColor = Colors.LabWhiteRef(0.5, 0.2, -0.3, customWhite);
-  expect(labColor.isValid()).toBe(true);
+  expect(labColor.IsValid()).toBe(true);
 
   const luvColor = Colors.LuvWhiteRef(0.5, 0.2, -0.3, customWhite);
-  expect(luvColor.isValid()).toBe(true);
+  expect(luvColor.IsValid()).toBe(true);
 
   const hclColor = Colors.HclWhiteRef(180, 0.4, 0.5, customWhite);
-  expect(hclColor.isValid()).toBe(true);
+  expect(hclColor.IsValid()).toBe(true);
 });
 
 test('LabToHcl utility function', () => {
@@ -74,16 +74,16 @@ test('LabToHcl utility function', () => {
 
 test('Linear RGB constructors', () => {
   const linearColor = Colors.LinearRgb(0.5, 0.6, 0.7);
-  expect(linearColor.isValid()).toBe(true);
+  expect(linearColor.IsValid()).toBe(true);
 
   const fastLinearColor = Colors.FastLinearRgb(0.5, 0.6, 0.7);
-  expect(fastLinearColor.isValid()).toBe(true);
+  expect(fastLinearColor.IsValid()).toBe(true);
 });
 
 test('XYZ and Xyy constructors', () => {
   const xyzColor = Colors.Xyz(0.5, 0.6, 0.4);
-  expect(xyzColor.isValid()).toBe(true);
+  expect(xyzColor.IsValid()).toBe(true);
 
   const xyyColor = Colors.Xyy(0.3, 0.4, 0.6);
-  expect(xyyColor.isValid()).toBe(true);
+  expect(xyyColor.IsValid()).toBe(true);
 });

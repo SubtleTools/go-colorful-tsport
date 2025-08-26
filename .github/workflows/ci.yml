@@ -39,13 +39,20 @@ jobs:
         run: bun install
 
       - name: Run linting
-        run: bun run lint:ci
+        run: bun run lint
 
       - name: Type checking
-        run: bun run build:ci
+        run: bun run build
 
       - name: Run tests
-        run: bun run test:ci
+        run: bun test --ignore "**/automated-cases.test.ts"
+
+      - name: Run compatibility tests
+        run: |
+          cd test/corpus/basic/01-simple-color-operations && go mod tidy
+          cd ../04-deterministic-operations && go mod tidy
+          cd ../../../../
+          bun test test/automated-comparison.test.ts
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -76,7 +83,7 @@ jobs:
         run: bun run format:check
 
       - name: Run linting
-        run: bun run lint:ci
+        run: bun run lint
 
   build:
     runs-on: ubuntu-latest
@@ -98,7 +105,7 @@ jobs:
         run: bun install
 
       - name: Build package
-        run: bun run build:ci
+        run: bun run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -122,7 +129,7 @@ jobs:
         run: bun install
 
       - name: Build documentation
-        run: bun run docs:build:ci
+        run: bun run docs:build
 
       - name: Upload docs artifacts
         uses: actions/upload-artifact@v4

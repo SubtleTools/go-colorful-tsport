@@ -57,7 +57,7 @@ Both APIs are functionally identical and produce the exact same results.
 ### TypeScript Style API (Default)
 
 ```typescript
-import { Color, Hex, HSV, Lab, HCL } from 'go-colorful';
+import { Color, Hex, HSV, Lab, HCL } from '@tsports/go-colorful';
 
 // Create colors in different ways
 const c1 = new Color(0.313725, 0.478431, 0.721569); // Direct RGB
@@ -73,7 +73,7 @@ console.log(c1.hex()); // "#517ab8"
 ### Go Style API (For Go Developers)
 
 ```typescript
-import { GoStyle } from 'go-colorful';
+import * as GoStyle from '@tsports/go-colorful/go-style';
 
 // Same functionality, Go naming conventions
 const c1 = new GoStyle.Color(0.313725, 0.478431, 0.721569); // R, G, B fields
@@ -108,7 +108,7 @@ console.log(`HSV: ${h.toFixed(1)}, ${s.toFixed(3)}, ${v.toFixed(3)}`);
 ### Color Distance & Comparison
 
 ```typescript
-import { Color } from 'go-colorful';
+import { Color } from '@tsports/go-colorful';
 
 const c1 = new Color(0.5, 0.1, 0.8);
 const c2 = new Color(0.3, 0.2, 0.6);
@@ -122,7 +122,7 @@ console.log('CIEDE2000 distance:', c1.distanceCIEDE2000(c2)); // Most accurate
 ### Color Blending
 
 ```typescript
-import { Hex } from 'go-colorful';
+import { Hex } from '@tsports/go-colorful';
 
 const warm = Hex("#fdffcc");
 const cool = Hex("#242a42");
@@ -141,7 +141,7 @@ import {
   WarmColor,
   FastHappyColor,
   HappyColor
-} from 'go-colorful';
+} from '@tsports/go-colorful';
 
 // Generate random colors
 const warmColor = WarmColor();     // Slow but consistent
@@ -159,7 +159,7 @@ import {
   WarmPalette,
   HappyPalette,
   FastWarmPalette
-} from 'go-colorful';
+} from '@tsports/go-colorful';
 
 // Generate color palettes
 const [softColors, error] = SoftPalette(5);
@@ -175,7 +175,7 @@ if (!error) {
 ### Color Sorting
 
 ```typescript
-import { Sorted, FastHappyPalette } from 'go-colorful';
+import { Sorted, FastHappyPalette } from '@tsports/go-colorful';
 
 // Generate random colors and sort them for smooth transitions
 const randomColors = FastHappyPalette(20);

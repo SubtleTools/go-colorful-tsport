@@ -1,12 +1,12 @@
 {
   "name": "@tsports/go-colorful",
   "version": "1.0.7-tsport",
-  "goSourceVersion": "v1.0.7",
+  "goSourceVersion": "v1.2.0",
   "portInfo": {
     "sourceRepo": "https://github.com/lucasb-eyer/go-colorful",
-    "sourceVersion": "v1.0.7",
+    "sourceVersion": "v1.2.0",
     "tsportVersion": 0,
-    "lastUpdated": "2024-08-24T12:00:00.000Z"
+    "lastUpdated": "2024-08-26T15:30:00.000Z"
   },
   "description": "A TypeScript port of the go-colorful package for working with colors",
   "main": "./dist/index.js",
@@ -88,7 +88,7 @@
     "clean": "moon run clean",
     "dev": "moon run dev",
     "test": "moon run test",
-    "test:ci": "bun test",
+    "test:ci": "TEST_FILTER=\"NOT_automated-cases\" bun test",
     "lint": "moon run lint",
     "lint:ci": "biome lint src",
     "format": "moon run format",

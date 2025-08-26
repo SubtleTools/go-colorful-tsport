@@ -641,3 +641,31 @@ export class HexColor {
     this.Color = Hex(hexCode);
   }
 }
+
+/// Go-Compatible Deterministic Palette Generation ///
+
+import { newSeededRand, GO_DEFAULT_SEED } from './go-compatible-rand';
+
+/**
+ * FastWarmPaletteSeeded generates a warm palette with a specific seed for deterministic output.
+ * This function can produce identical results to Go's FastWarmPalette when using the same seed.
+ * 
+ * @param colorsCount Number of colors to generate
+ * @param seed Random seed (default: 1, same as Go's default)
+ * @returns Array of warm colors
+ */
+export function FastWarmPaletteSeeded(colorsCount: number, seed: number = GO_DEFAULT_SEED): Color[] {
+  return FastWarmPaletteWithRand(colorsCount, newSeededRand(seed));
+}
+
+/**
+ * FastHappyPaletteSeeded generates a happy palette with a specific seed for deterministic output.
+ * This function can produce identical results to Go's FastHappyPalette when using the same seed.
+ * 
+ * @param colorsCount Number of colors to generate
+ * @param seed Random seed (default: 1, same as Go's default)
+ * @returns Array of happy colors
+ */
+export function FastHappyPaletteSeeded(colorsCount: number, seed: number = GO_DEFAULT_SEED): Color[] {
+  return FastHappyPaletteWithRand(colorsCount, newSeededRand(seed));
+}

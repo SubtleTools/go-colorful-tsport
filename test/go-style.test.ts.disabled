@@ -296,7 +296,7 @@ test('Go naming conventions are preserved', () => {
 test('Go-style distance calculation methods (comprehensive)', () => {
   const c1 = new GoStyle.Color(0.8, 0.2, 0.3);
   const c2 = new GoStyle.Color(0.2, 0.7, 0.9);
-  
+
   // Test all distance methods
   expect(typeof c1.DistanceLinearRgb(c2)).toBe('number');
   expect(typeof c1.DistanceLinearRGB(c2)).toBe('number'); // Alias
@@ -306,7 +306,7 @@ test('Go-style distance calculation methods (comprehensive)', () => {
   expect(typeof c1.DistanceHPLuv(c2)).toBe('number');
   expect(typeof c1.DistanceCIE94(c2)).toBe('number');
   expect(typeof c1.DistanceCIEDE2000klch(c2, 1, 1, 1)).toBe('number');
-  
+
   // Verify results are positive
   expect(c1.DistanceLinearRgb(c2)).toBeGreaterThan(0);
   expect(c1.DistanceRiemersma(c2)).toBeGreaterThan(0);
@@ -320,7 +320,7 @@ test('Go-style distance calculation methods (comprehensive)', () => {
 test('Go-style blending methods (comprehensive)', () => {
   const red = new GoStyle.Color(1, 0, 0);
   const blue = new GoStyle.Color(0, 0, 1);
-  
+
   // Test all blending methods
   const blendLinearRgb = red.BlendLinearRgb(blue, 0.5);
   const blendHsv = red.BlendHsv(blue, 0.5);
@@ -328,17 +328,17 @@ test('Go-style blending methods (comprehensive)', () => {
   const blendLuvLCh = red.BlendLuvLCh(blue, 0.5);
   const blendOkLab = red.BlendOkLab(blue, 0.5);
   const blendOkLch = red.BlendOkLch(blue, 0.5);
-  
+
   // Verify all return valid colors (note: some blended colors may be slightly out of gamut)
   expect(blendLinearRgb.IsValid()).toBe(true);
   expect(blendHsv.IsValid()).toBe(true);
   expect(blendLuv.IsValid()).toBe(true);
-  
+
   // These may produce out-of-gamut results when blending extreme colors - check they exist
   expect(blendLuvLCh).toBeDefined();
   expect(blendOkLab.IsValid()).toBe(true);
   expect(blendOkLch.IsValid()).toBe(true);
-  
+
   // Test edge cases t=0 and t=1
   expect(red.BlendLinearRgb(blue, 0).R).toBeCloseTo(1, 5);
   expect(red.BlendLinearRgb(blue, 1).B).toBeCloseTo(1, 5);
@@ -346,7 +346,7 @@ test('Go-style blending methods (comprehensive)', () => {
 
 test('Go-style color space conversions (comprehensive)', () => {
   const color = new GoStyle.Color(0.7, 0.4, 0.9);
-  
+
   // Test all conversion methods
   const linearRgb = color.LinearRgb();
   const fastLinearRgb = color.FastLinearRgb();
@@ -363,7 +363,7 @@ test('Go-style color space conversions (comprehensive)', () => {
   const okLch = color.OkLch();
   const hsluv = color.HSLuv();
   const hpluv = color.HPLuv();
-  
+
   // Verify all return valid arrays
   expect(linearRgb).toHaveLength(3);
   expect(fastLinearRgb).toHaveLength(3);
@@ -380,11 +380,17 @@ test('Go-style color space conversions (comprehensive)', () => {
   expect(okLch).toHaveLength(3);
   expect(hsluv).toHaveLength(3);
   expect(hpluv).toHaveLength(3);
-  
+
   // Verify values are numbers
-  linearRgb.forEach(v => expect(typeof v).toBe('number'));
-  xyz.forEach(v => expect(typeof v).toBe('number'));
-  okLab.forEach(v => expect(typeof v).toBe('number'));
+  linearRgb.forEach((v) => {
+    expect(typeof v).toBe('number');
+  });
+  xyz.forEach((v) => {
+    expect(typeof v).toBe('number');
+  });
+  okLab.forEach((v) => {
+    expect(typeof v).toBe('number');
+  });
 });
 
 test('Go-style constructor functions (comprehensive)', () => {
@@ -395,11 +401,11 @@ test('Go-style constructor functions (comprehensive)', () => {
   expect(GoStyle.FastLinearRgb(0.2, 0.6, 0.8).IsValid()).toBe(true);
   expect(GoStyle.Luv(0.5, 0.1, -0.1).IsValid()).toBe(true);
   expect(GoStyle.LuvWhiteRef(0.5, 0.1, -0.1, GoStyle.D50).IsValid()).toBe(true);
-  
+
   // HCL can easily go out of gamut, use more conservative values
   expect(GoStyle.Hcl(180, 0.3, 0.6).IsValid()).toBe(true);
   expect(GoStyle.HclWhiteRef(180, 0.3, 0.6, GoStyle.D50).IsValid()).toBe(true);
-  
+
   expect(GoStyle.LuvLCh(0.6, 0.3, 45).IsValid()).toBe(true);
   expect(GoStyle.LuvLChWhiteRef(0.6, 0.3, 45, GoStyle.D50).IsValid()).toBe(true);
   expect(GoStyle.OkLab(0.7, 0.1, 0.05).IsValid()).toBe(true);
@@ -411,12 +417,15 @@ test('Go-style constructor functions (comprehensive)', () => {
 test('Go-style color generation functions work', () => {
   // Test basic color generation
   expect(GoStyle.FastWarmColor().IsValid()).toBe(true);
-  expect(GoStyle.WarmColor().IsValid()).toBe(true);  
+  expect(GoStyle.WarmColor().IsValid()).toBe(true);
   expect(GoStyle.FastHappyColor().IsValid()).toBe(true);
   expect(GoStyle.HappyColor().IsValid()).toBe(true);
-  
-  // Test with custom random (using simple mock)
-  const mockRand = { float64: () => 0.5 };
+
+  // Test with custom random (using Go-style mock)
+  const mockRand = {
+    Float64: () => 0.5,
+    Intn: (n: number) => Math.floor(n / 2),
+  };
   expect(GoStyle.FastWarmColorWithRand(mockRand).IsValid()).toBe(true);
   expect(GoStyle.WarmColorWithRand(mockRand).IsValid()).toBe(true);
   expect(GoStyle.FastHappyColorWithRand(mockRand).IsValid()).toBe(true);
@@ -427,36 +436,40 @@ test('Go-style palette generation functions (basic)', () => {
   // Test just the fast functions that don't use complex iteration
   const warmPalette = GoStyle.FastWarmPalette(2);
   expect(warmPalette).toHaveLength(2);
-  warmPalette.forEach(color => expect(color.IsValid()).toBe(true));
-  
+  warmPalette.forEach((color) => {
+    expect(color.IsValid()).toBe(true);
+  });
+
   const happyPalette = GoStyle.FastHappyPalette(2);
   expect(happyPalette).toHaveLength(2);
-  happyPalette.forEach(color => expect(color.IsValid()).toBe(true));
-  
+  happyPalette.forEach((color) => {
+    expect(color.IsValid()).toBe(true);
+  });
+
   // Test with simple mock random (Go-style)
-  const mockRand = { 
+  const mockRand = {
     Float64: () => 0.5,
-    Intn: (n: number) => Math.floor(n / 2)
+    Intn: (n: number) => Math.floor(n / 2),
   };
   const warmRandPalette = GoStyle.FastWarmPaletteWithRand(2, mockRand);
   expect(warmRandPalette).toHaveLength(2);
-  
+
   const happyRandPalette = GoStyle.FastHappyPaletteWithRand(2, mockRand);
   expect(happyRandPalette).toHaveLength(2);
-  
+
   // Note: Skipping slow palette generation functions (WarmPalette, SoftPalette, etc.)
   // that use complex iteration algorithms which may timeout in test environment
 });
 
 test('Go-style MakeColor function works', () => {
   const mockColorInterface = {
-    RGBA: () => [32768, 16384, 49152, 65535] as [number, number, number, number]
+    RGBA: () => [32768, 16384, 49152, 65535] as [number, number, number, number],
   };
-  
+
   const [color, ok] = GoStyle.MakeColor(mockColorInterface);
   expect(ok).toBe(true);
   expect(color.IsValid()).toBe(true);
-  
+
   // Test values are in correct range
   expect(color.R).toBeGreaterThanOrEqual(0);
   expect(color.R).toBeLessThanOrEqual(1);
@@ -469,11 +482,11 @@ test('Go-style MakeColor function works', () => {
 test('Go-style HexColor class works correctly', () => {
   const color = new GoStyle.Color(0.8, 0.4, 0.6);
   const hexColor = new GoStyle.HexColor(color);
-  
+
   expect(hexColor.toColor().R).toBe(0.8);
   expect(hexColor.toColor().G).toBe(0.4);
   expect(hexColor.toColor().B).toBe(0.6);
-  
+
   const hexColor2 = GoStyle.HexColor.fromColor(color);
   expect(hexColor2.toColor().R).toBe(color.R);
   expect(hexColor2.toColor().G).toBe(color.G);
@@ -482,28 +495,28 @@ test('Go-style HexColor class works correctly', () => {
 
 test('Go-style round-trip conversions maintain accuracy', () => {
   const originalColor = new GoStyle.Color(0.6, 0.7, 0.4);
-  
+
   // Test HSV round-trip
   const [h, s, v] = originalColor.Hsv();
   const hsvColor = GoStyle.Hsv(h, s, v);
   expect(hsvColor.R).toBeCloseTo(originalColor.R, 5);
   expect(hsvColor.G).toBeCloseTo(originalColor.G, 5);
   expect(hsvColor.B).toBeCloseTo(originalColor.B, 5);
-  
+
   // Test Lab round-trip
   const [l, a, b] = originalColor.Lab();
   const labColor = GoStyle.Lab(l, a, b);
   expect(labColor.R).toBeCloseTo(originalColor.R, 3);
   expect(labColor.G).toBeCloseTo(originalColor.G, 3);
   expect(labColor.B).toBeCloseTo(originalColor.B, 3);
-  
+
   // Test XYZ round-trip
   const [x, y, z] = originalColor.Xyz();
   const xyzColor = GoStyle.Xyz(x, y, z);
   expect(xyzColor.R).toBeCloseTo(originalColor.R, 3);
   expect(xyzColor.G).toBeCloseTo(originalColor.G, 3);
   expect(xyzColor.B).toBeCloseTo(originalColor.B, 3);
-  
+
   // Test OkLab round-trip
   const [okL, okA, okB] = originalColor.OkLab();
   const okLabColor = GoStyle.OkLab(okL, okA, okB);
