@@ -1,6 +1,6 @@
 {
   "name": "@tsports/go-colorful",
-  "version": "1.2.0-tsport.0",
+  "version": "1.2.0-tsport",
   "goSourceVersion": "v1.2.0",
   "portInfo": {
     "sourceRepo": "https://github.com/lucasb-eyer/go-colorful",
