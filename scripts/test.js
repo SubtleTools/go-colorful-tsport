@@ -26,6 +26,13 @@ function findTestFiles(dir) {
 }
 
 const testFiles = findTestFiles('test');
+
+// If --list-only flag is provided, just output file paths
+if (process.argv.includes('--list-only')) {
+  console.log(testFiles.join(' '));
+  process.exit(0);
+}
+
 const args = ['test', ...testFiles];
 
 console.log(`Running tests on ${testFiles.length} files...`);

@@ -83,7 +83,7 @@ jobs:
         run: bun install
 
       - name: Run tests with coverage
-        run: bun test --coverage test
+        run: bun test --coverage $(bun scripts/test.js --list-only)
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
