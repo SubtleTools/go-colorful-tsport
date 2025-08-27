@@ -92,7 +92,7 @@
 ### Removed Workflows
 
 - `test.yml` - Functionality merged into `ci.yml`
-- `docs.yml` - Functionality merged into `ci.yml` docs job  
+- `docs.yml` - Functionality merged into `ci.yml` docs job
 - `publish.yml` - Functionality merged into `release.yml`
 
 ### Consolidated Workflows

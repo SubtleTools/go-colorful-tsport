@@ -53,7 +53,7 @@ jobs:
             # For tag push, extract from tag
             TAG=${GITHUB_REF#refs/tags/v}
           fi
-          
+
           echo "version=$TAG" >> $GITHUB_OUTPUT
 
           # Get Go source version
@@ -138,7 +138,7 @@ jobs:
 
           ### 🔗 Compatibility
           - ✅ 100% API compatibility with Go source version
-          - ✅ All tests passing across platforms  
+          - ✅ All tests passing across platforms
           - ✅ TypeScript strict mode compliant
           - ✅ Node.js 18+ support
           - ✅ ESM module format with tree-shaking
@@ -151,7 +151,7 @@ jobs:
           ---
 
           Published successfully to NPM! 🎉
-          
+
           See the [commit history](https://github.com/SubtleTools/go-colorful-tsport/commits/v${{ steps.version.outputs.version }}) for detailed changes.
           EOF
 
