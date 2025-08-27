@@ -85,7 +85,7 @@ jobs:
           bun run test
 
       - name: Dry run check
-        if: inputs.dry_run == 'true'
+        if: github.event.inputs.dry_run == 'true'
         run: |
           echo "🏃 DRY RUN MODE - Not publishing to NPM or creating release"
           npm pack --dry-run
@@ -93,7 +93,7 @@ jobs:
           echo "✅ Would create GitHub release v${{ steps.version.outputs.version }}"
 
       - name: Publish to NPM
-        if: inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_SECRET }}
         run: |
@@ -101,13 +101,13 @@ jobs:
           npm publish --access public
 
       - name: Create release tarball
-        if: inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true'
         run: |
           tar -czf go-colorful-${{ steps.version.outputs.version }}.tar.gz \
             dist/ package.json README.md LICENSE CHANGELOG.md
 
       - name: Generate release notes
-        if: inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true'
         id: release-notes
         run: |
           cat > release_notes.md << EOF
@@ -156,7 +156,7 @@ jobs:
           EOF
 
       - name: Create GitHub Release
-        if: inputs.dry_run != 'true'
+        if: github.event.inputs.dry_run != 'true'
         uses: softprops/action-gh-release@v2
         with:
           name: "Release v${{ steps.version.outputs.version }}"
