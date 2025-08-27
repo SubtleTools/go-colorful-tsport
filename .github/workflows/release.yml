@@ -95,10 +95,11 @@ jobs:
       - name: Publish to NPM
         if: github.event.inputs.dry_run != 'true'
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "📦 Publishing @tsports/go-colorful@${{ steps.version.outputs.version }}"
-          npm publish --access public
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+          npm publish --access public --tag latest
 
       - name: Create release tarball
         if: github.event.inputs.dry_run != 'true'

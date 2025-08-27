@@ -36,17 +36,17 @@
   ],
   "author": {
     "name": "tsports",
-    "url": "https://github.com/tsports"
+    "url": "https://github.com/SubtleTools"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TSports/go-colorful"
+    "url": "git+https://github.com/SubtleTools/go-colorful.git"
   },
   "bugs": {
-    "url": "https://github.com/TSports/go-colorful/issues"
+    "url": "https://github.com/SubtleTools/go-colorful/issues"
   },
-  "homepage": "https://github.com/TSports/go-colorful#readme",
+  "homepage": "https://subtletools.github.io/go-colorful",
   "engines": {
     "node": ">=18.0.0"
   },
