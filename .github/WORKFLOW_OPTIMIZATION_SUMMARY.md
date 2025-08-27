@@ -10,13 +10,12 @@
 
 **Total: 544 lines, massive redundancy**
 
-## After Optimization (3 workflows)
+## After Optimization (2 workflows)
 
-- `ci.yml` - 165 lines, 4 jobs, smart dependency management
-- `publish.yml` - 96 lines, 1 job, simplified publishing
-- `release.yml` - 180 lines, 3 jobs, comprehensive release process
+- `ci.yml` - 194 lines, 5 jobs, smart dependency management
+- `release.yml` - 170 lines, 1 job, unified release & publish process
 
-**Total: 441 lines, 18% reduction, eliminated redundancy**
+**Total: 364 lines, 33% reduction, eliminated redundancy**
 
 ## Key Improvements
 
@@ -53,11 +52,13 @@
 - **Rich Release Notes**: Auto-generated comprehensive release information
 - **Better Error Handling**: Proper validation and error messages
 
-### 6. Enhanced Publishing
+### 6. Unified Release Process
 
-- **Dry Run Support**: Manual workflow dispatch with dry run option
+- **Single Workflow**: Combined release creation and NPM publishing in one job
+- **Atomic Operations**: Ensures NPM publish happens before GitHub release creation
+- **Dry Run Support**: Manual workflow dispatch with dry run option for testing
 - **Environment Protection**: Uses GitHub environments for security
-- **Release Integration**: Auto-updates release with NPM publish info
+- **Failure Safety**: If NPM publish fails, no GitHub release is created
 
 ### 7. Resource Optimization
 
@@ -91,13 +92,13 @@
 ### Removed Workflows
 
 - `test.yml` - Functionality merged into `ci.yml`
-- `docs.yml` - Functionality merged into `ci.yml` docs job
+- `docs.yml` - Functionality merged into `ci.yml` docs job  
+- `publish.yml` - Functionality merged into `release.yml`
 
-### Preserved Workflows
+### Consolidated Workflows
 
-- `ci.yml` - Enhanced and consolidated
-- `publish.yml` - Streamlined with dry run support
-- `release.yml` - Enhanced with better validation and release notes
+- `ci.yml` - Enhanced with smart dependencies, quick feedback, and parallel execution
+- `release.yml` - Unified release process combining validation, NPM publishing, and GitHub release creation
 
 ### Backward Compatibility
 
