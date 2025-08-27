@@ -37,11 +37,11 @@ jobs:
         run: |
           TAG=${GITHUB_REF#refs/tags/v}
           echo "version=$TAG" >> $GITHUB_OUTPUT
-          
+
           # Get Go source version
           GO_VERSION=$(node -p "require('./package.json').goSourceVersion || 'unknown'")
           echo "go_version=$GO_VERSION" >> $GITHUB_OUTPUT
-          
+
           # Check if it's a prerelease (contains -alpha, -beta, -rc, -tsport, etc.)
           if [[ "$TAG" == *"-"* ]]; then
             echo "is_prerelease=true" >> $GITHUB_OUTPUT
@@ -126,21 +126,21 @@ jobs:
         run: |
           cat > release_notes.md << EOF
           ## @tsports/go-colorful v${{ needs.validate.outputs.version }}
-          
+
           A TypeScript port of the go-colorful library with 100% API compatibility.
-          
+
           ### 📦 Installation
           \`\`\`bash
           npm install @tsports/go-colorful@${{ needs.validate.outputs.version }}
           # or
           bun add @tsports/go-colorful@${{ needs.validate.outputs.version }}
           \`\`\`
-          
+
           ### 📋 Version Information
           - **TSPort Version**: ${{ needs.validate.outputs.version }}
           - **Go Source Version**: ${{ needs.validate.outputs.go_version }}
           - **Package**: @tsports/go-colorful
-          
+
           ### ✨ Features
           - 🎨 Complete color space conversions (RGB, HSV, HSL, Lab, Luv, HCL, OkLab, OkLch, HSLuv, HPLuv)
           - 📏 Color distance calculations (CIE76, CIE94, CIEDE2000)
@@ -149,21 +149,21 @@ jobs:
           - 🔧 Both TypeScript and Go-style APIs
           - 📘 Full TypeScript type definitions
           - ✅ 148+ passing tests with 87%+ coverage
-          
+
           ### 🔗 Compatibility
           - ✅ 100% API compatibility with Go source version
           - ✅ All tests passing across platforms
           - ✅ TypeScript strict mode compliant
           - ✅ Node.js 18+ support
           - ✅ ESM module format with tree-shaking
-          
+
           ### 📚 Documentation
           - [API Documentation](https://subtletools.github.io/go-colorful-tsport/)
           - [GitHub Repository](https://github.com/SubtleTools/go-colorful-tsport)
           - [NPM Package](https://www.npmjs.com/package/@tsports/go-colorful)
-          
+
           ---
-          
+
           See the [commit history](https://github.com/SubtleTools/go-colorful-tsport/commits/v${{ needs.validate.outputs.version }}) for detailed changes.
           EOF
 

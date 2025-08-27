@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Dry run (test without publishing)'
+        description: "Dry run (test without publishing)"
         required: false
-        default: 'false'
+        default: "false"
         type: boolean
 
 env:
@@ -48,7 +48,7 @@ jobs:
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
-          
+
           GO_VERSION=$(node -p "require('./package.json').goSourceVersion || 'unknown'")
           echo "go_version=$GO_VERSION" >> $GITHUB_OUTPUT
 
@@ -74,17 +74,17 @@ jobs:
           script: |
             const version = "${{ steps.version.outputs.version }}";
             const goVersion = "${{ steps.version.outputs.go_version }}";
-            
+
             // Add NPM info to release
             const npmInfo = `
-            
+
             ### 📦 NPM Package Published
             - **Package**: [@tsports/go-colorful](https://www.npmjs.com/package/@tsports/go-colorful)
             - **Version**: ${version}
             - **Install**: \`npm install @tsports/go-colorful@${version}\`
-            
+
             Published successfully to NPM! 🎉`;
-            
+
             if (context.payload.release) {
               await github.rest.repos.updateRelease({
                 owner: context.repo.owner,
